@@ -2,8 +2,11 @@
   "name": "khine-pwar-api",
   "version": "1.0.0",
   "description": "The family budget app",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
+    "start": "nodemon ./src/index.ts",
+    "build": "tsc --build",
+    "serve": "node ./build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
