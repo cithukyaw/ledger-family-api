@@ -9,6 +9,12 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello, TypeScript Express!');
 });
 
+// Health check
+app.get('/healthcheck', (req: Request, res: Response) => {
+  res.status(200).send('OK');
+})
+
+// API
 // User routes
 app.use('/api/users', userRouter);
 
