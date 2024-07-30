@@ -1,8 +1,14 @@
 import express, {Request, Response} from 'express';
 import userRouter from "./routes/users";
+import bodyParser from 'body-parser';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
 
 // Main page
 app.get('/', (req: Request, res: Response) => {
