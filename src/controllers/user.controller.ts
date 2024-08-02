@@ -1,29 +1,43 @@
 import {Request, Response} from 'express';
-import { CreateUserDto } from '../dtos/CreateUser.dto';
-import { User } from '../types/response';
+import {CreateUserDto} from '../dtos/CreateUser.dto';
+import {createUser, findUsers, getUserById, getUserByUsername} from "../services/user.service";
+import {User} from "@prisma/client";
 
-export const getUsers = (req: Request, res: Response) => {
-  return res.send([]);
-}
-
-export const getUser = (req: Request<{id: number}>, res: Response) => {
-  const userId = req.params.id;
-  console.log(userId);
-
-  return res.send({
-    id: userId
-  });
-}
-
-export const createUser = (req: Request<{}, {}, CreateUserDto>, res: Response<User>) => {
-  // TODO: create user
-  console.log(req.body)
-
-  const createdUser: User = {
-    id: 1,
-    username: "john.doe",
-    email: "john.doe@example.com"
-  };
+/**
+ * Controller: register
+ * Register a new user
+ */
+export const register = async (req: Request<{}, {}, CreateUserDto>, res: Response<User>) => {
+  const createdUser = await createUser(req.body);
 
   return res.status(201).send(createdUser);
+}
+
+/**
+ * Controller: getUsers
+ * Return all users
+ */
+export const getUsers = async (req: Request, res: Response) => {
+  const users = await findUsers();
+
+  return res.send(users);
+}
+
+/**
+ * Controller: getUser
+ * Return a user by id
+ */
+export const getUser = async (req: Request, res: Response) => {
+  const id = parseInt(req.params.id, 10);
+
+  if (isNaN(id)) {
+    return res.status(400).send({ message: 'Invalid ID provided. Expected an integer.' });
+  }
+
+  const user = await getUserById(id);
+  if (!user) {
+    return res.status(400).json({ message: 'User not found' });
+  }
+
+  return res.send(user);
 }
