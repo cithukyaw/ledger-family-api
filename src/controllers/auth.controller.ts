@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import {generateToken} from "../lib/jwt";
+import {generateTokens} from "../lib/jwt";
 import bcrypt from "bcryptjs";
 import {getUserByUsername} from "../services/user.service";
 
@@ -20,8 +20,9 @@ export const login = async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Invalid credentials' });
   }
 
-  const token = generateToken(user);
-  res.json({ token });
+  const tokens = generateTokens(user);
+
+  res.json(tokens);
 }
 
 /**
