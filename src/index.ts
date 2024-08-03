@@ -14,6 +14,8 @@ app.use(bodyParser.json());
 // initialize passport
 app.use(passport.initialize());
 
+const authMiddleware = passport.authenticate('jwt', { session: false });
+
 // Main page
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, TypeScript Express!');
@@ -26,12 +28,7 @@ app.get('/healthcheck', (req: Request, res: Response) => {
 
 // API routes
 app.use('/api/auth', authRouter);
-app.use('/api/users', userRouter);
-
-// Protected routes
-app.use('/protected', passport.authenticate('jwt', { session: false }), (req: Request, res: Response) => {
-  res.send('This is a protected route.')
-});
+app.use('/api/users', authMiddleware, userRouter);
 
 // Start the server
 app.listen(PORT, () => {
