@@ -9,9 +9,9 @@ async function seed() {
 
   await prisma.user.create({
     data: {
-      username: 'admin',
-      password: hashSync('password', salt),
+      name: 'Administrator',
       email: 'admin@localhost.com',
+      password: hashSync('password', salt),
       role: ROLE.ADMIN,
       active: true
     }

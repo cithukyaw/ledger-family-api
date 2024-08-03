@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import {CreateUserDto} from '../dtos/CreateUser.dto';
-import {createUser, findUsers, getUserById, getUserByUsername} from "../services/user.service";
+import {createUser, findUsers, getUserById, getUserByEmail} from "../services/user.service";
 import {User} from "@prisma/client";
 
 /**

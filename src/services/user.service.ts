@@ -7,7 +7,7 @@ const prisma = new PrismaClient()
 
 const publicUserFields = {
   id: true,
-  username: true,
+  name: true,
   email: true,
   role: true,
   active: true
@@ -29,9 +29,9 @@ export const getUserById = async (id: number) => {
   });
 }
 
-export const getUserByUsername = (username: string) => {
+export const getUserByEmail = (email: string) => {
   return prisma.user.findUnique({
-    where: { username }
+    where: { email }
   });
 }
 

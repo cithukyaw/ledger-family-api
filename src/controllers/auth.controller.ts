@@ -1,16 +1,16 @@
 import {Request, Response} from 'express';
 import {generateTokens} from "../lib/jwt";
 import bcrypt from "bcryptjs";
-import {getUserByUsername} from "../services/user.service";
+import {getUserByEmail} from "../services/user.service";
 
 /**
  * Controller: login
- * Authenticate a user by username and password
+ * Authenticate a user by email and password
  */
 export const login = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  const user = await getUserByUsername(username);
+  const user = await getUserByEmail(email);
   if (!user) {
     return res.status(400).json({ message: 'User not found' });
   }
