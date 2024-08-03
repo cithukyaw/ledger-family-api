@@ -1,7 +1,7 @@
 {
-  "name": "khine-pwar-api",
+  "name": "ledger-family-api",
   "version": "1.0.0",
-  "description": "The family budget app",
+  "description": "The family ledger management API",
   "main": "index.js",
   "scripts": {
     "start": "nodemon ./src/index.ts",
