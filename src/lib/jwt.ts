@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import {User} from "@prisma/client";
-import {UserTokens} from "../types/user";
+import {UserTokens} from "../types/declarations";
 
 export const generateTokens = (user: User): UserTokens => {
   const payload = {

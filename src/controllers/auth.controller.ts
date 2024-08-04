@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import {createUser, getUserByEmail} from "../services/user.service";
 import {CreateUserDto} from "../dtos/CreateUser.dto";
 import {userCreateSchema, userLoginSchema} from "../lib/validation";
-import {CreateUserResponse, LoginUserResponse} from "../types/user";
+import {CreateUserResponse, LoginUserResponse} from "../types/declarations";
 import { Prisma } from '@prisma/client';
 
 /**
