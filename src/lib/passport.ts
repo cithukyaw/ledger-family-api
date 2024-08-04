@@ -8,8 +8,6 @@ const opts = {
   secretOrKey: process.env.JWT_SECRET as string,
 }
 
-const prisma = new PrismaClient();
-
 passport.use(
   new JwtStrategy(opts, async(payload, done) => {
     try {
