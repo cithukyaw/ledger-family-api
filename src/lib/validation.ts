@@ -10,3 +10,7 @@ export const userLoginSchema = z.object({
   email: z.string().max(100).email(),
   password: z.string().min(8).max(20),
 });
+
+export const singleUserSchema = z.object({
+  id: z.string().regex(/^\d+$/, { message: 'Expected a numeric string' })
+});

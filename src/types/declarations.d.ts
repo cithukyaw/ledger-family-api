@@ -1,4 +1,4 @@
-import {User} from "@prisma/client";
+import {User as UserModel} from "@prisma/client";
 import {ZodError} from "zod";
 
 export interface ApiError {
@@ -11,6 +11,17 @@ export interface UserTokens {
   refreshToken: string;
 }
 
-export type CreateUserResponse = User | ZodError | ApiError[];
+export type User = {
+  id: number;
+  name: string | null;
+  email: string;
+  role: string;
+  active: boolean;
+}
+
+export type CreateUserResponse = UserModel | ZodError | ApiError[];
 
 export type LoginUserResponse = UserTokens | ZodError | ApiError[];
+
+export type SingleUserResponse = User | ZodError | ApiError[];
+
