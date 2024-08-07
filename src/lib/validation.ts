@@ -12,5 +12,5 @@ export const userLoginSchema = z.object({
 });
 
 export const singleUserSchema = z.object({
-  id: z.string().regex(/^\d+$/, { message: 'Expected a numeric string' })
+  id: z.number()
 });
