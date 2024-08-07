@@ -6,7 +6,6 @@ import {ParamIdToNumber} from "../lib/decorators";
 
 class UserController {
   /**
-   * Controller: getUsers
    * Return all users
    */
   public static async getUsers(req: Request, res: Response) {
@@ -16,7 +15,6 @@ class UserController {
   }
 
   /**
-   * Controller: getUser
    * Return a user by id
    */
   @ParamIdToNumber()
