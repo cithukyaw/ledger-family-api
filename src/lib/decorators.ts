@@ -1,4 +1,5 @@
 import {NextFunction, Request, Response} from 'express';
+import {apiValidationError} from "./api";
 
 export const ParamIdToNumber = () => {
   return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
@@ -9,13 +10,7 @@ export const ParamIdToNumber = () => {
       const numericId = parseInt(id, 10);
 
       if (isNaN(numericId)) {
-        console.error('Invalid ID provided. Expected an integer.');
-        return res.status(400).send([
-          {
-            'field': 'id',
-            'message': 'Invalid ID provided. Expected an integer.'
-          }
-        ])
+        return apiValidationError(res, 'id', 'Invalid ID provided. Expected an integer.');
       }
 
       req.params.id = numericId as any; // TypeScript requires 'as any' to bypass type checks here

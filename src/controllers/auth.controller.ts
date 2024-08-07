@@ -6,6 +6,7 @@ import {CreateUserDto} from "../dtos/CreateUser.dto";
 import {userCreateSchema, userLoginSchema} from "../lib/validation";
 import {CreateUserResponse, LoginUserResponse} from "../types/declarations";
 import { Prisma } from '@prisma/client';
+import {apiValidationError, apiZodError} from "../lib/api";
 
 class AuthController {
   /**
@@ -15,7 +16,7 @@ class AuthController {
     const validation = userCreateSchema.safeParse(req.body);
 
     if (!validation.success) {
-      return res.status(400).json(validation.error);
+      return apiZodError(res, validation.error);
     }
 
     try {
@@ -25,12 +26,7 @@ class AuthController {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         // The .code property can be accessed in a type-safe manner
         if (e.code === 'P2002') {
-          return res.status(400).json([
-            {
-              field: 'email',
-              message: 'This email address is already in use. Try another one.'
-            }
-          ])
+          return apiValidationError(res, 'email', 'This email address is already in use. Try another one.')
         }
       }
     }
@@ -42,29 +38,19 @@ class AuthController {
   public static async login(req: Request, res: Response<LoginUserResponse>) {
     const validation = userLoginSchema.safeParse(req.body);
     if (!validation.success) {
-      return res.status(400).json(validation.error);
+      return apiZodError(res, validation.error);
     }
 
     const {email, password} = req.body;
 
     const user = await getUserByEmail(email);
     if (!user) {
-      return res.status(400).json([
-        {
-          field: 'email',
-          message: 'User not found'
-        }
-      ]);
+      return apiValidationError(res, 'email', 'User not found');
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json([
-        {
-          field: 'password',
-          message: 'Invalid credentials'
-        }
-      ]);
+      return apiValidationError(res, 'password', 'Invalid credentials');
     }
 
     const tokens = generateTokens(user);

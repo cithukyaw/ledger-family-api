@@ -3,6 +3,7 @@ import {findUsers, getUserById} from "../services/user.service";
 import {singleUserSchema} from "../lib/validation";
 import {SingleUserResponse} from "../types/declarations";
 import {ParamIdToNumber} from "../lib/decorators";
+import {apiValidationError, apiZodError} from "../lib/api";
 
 class UserController {
   /**
@@ -21,19 +22,14 @@ class UserController {
   public static async getUser(req: Request, res: Response<SingleUserResponse>) {
     const validation = singleUserSchema.safeParse(req.params);
     if (!validation.success) {
-      return res.status(400).json(validation.error);
+      return apiZodError(res, validation.error);
     }
 
     const id = req.params.id as unknown as number;
 
     const user = await getUserById(id);
     if (!user) {
-      return res.status(400).json([
-        {
-          field: 'id',
-          message: 'User not found'
-        }
-      ]);
+      return apiValidationError(res, 'id', 'User not found');
     }
 
     return res.status(200).json(user);
