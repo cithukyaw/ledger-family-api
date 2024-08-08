@@ -23,5 +23,6 @@ export type CreateUserResponse = UserModel | ZodError | ApiError[];
 
 export type LoginUserResponse = UserTokens | ZodError | ApiError[];
 
-export type SingleUserResponse = User | ZodError | ApiError[];
+export type RefreshTokenResponse = UserTokens | ZodError | ApiError[];
 
+export type SingleUserResponse = User | ZodError | ApiError[];

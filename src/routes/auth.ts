@@ -7,5 +7,7 @@ const router = Router();
 router.post('/register', AuthController.register);
 // api/auth/login
 router.post('/login', AuthController.login);
+// api/auth/refresh
+router.post('/refresh', AuthController.refreshToken);
 
 export default router;

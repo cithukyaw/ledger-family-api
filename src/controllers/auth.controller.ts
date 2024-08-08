@@ -3,10 +3,11 @@ import {generateTokens} from "../lib/jwt";
 import bcrypt from "bcryptjs";
 import {createUser, getUserByEmail} from "../services/user.service";
 import {CreateUserDto} from "../dtos/CreateUser.dto";
-import {userCreateSchema, userLoginSchema} from "../lib/validation";
-import {CreateUserResponse, LoginUserResponse} from "../types/declarations";
+import {refreshTokenSchema, userCreateSchema, userLoginSchema} from "../lib/validation";
+import {CreateUserResponse, LoginUserResponse, RefreshTokenResponse} from "../types/declarations";
 import { Prisma } from '@prisma/client';
 import {apiValidationError, apiZodError} from "../lib/api";
+import {findUserByRefreshToken, saveAuthToken} from "../services/authToken.service";
 
 class AuthController {
   /**
@@ -55,7 +56,31 @@ class AuthController {
 
     const tokens = generateTokens(user);
 
+    await saveAuthToken(user.id, tokens);
+
     res.json(tokens);
+  }
+
+  /**
+   * Refresh JWT token
+   */
+  public static async refreshToken(req: Request, res: Response<RefreshTokenResponse>) {
+    const validation = refreshTokenSchema.safeParse(req.body);
+    if (!validation.success) {
+      return apiZodError(res, validation.error);
+    }
+
+    try {
+      const { token } = req.body;
+      const user = await findUserByRefreshToken(token);
+
+      const tokens = generateTokens(user);
+      await saveAuthToken(user.id, tokens);
+
+      return res.json(tokens);
+    } catch (e) {
+      return apiValidationError(res, 'token', 'Invalid refresh token');
+    }
   }
 
   /**

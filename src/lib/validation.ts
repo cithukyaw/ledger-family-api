@@ -11,6 +11,10 @@ export const userLoginSchema = z.object({
   password: z.string().min(8).max(20),
 });
 
+export const refreshTokenSchema = z.object({
+  token: z.string().max(255),
+})
+
 export const singleUserSchema = z.object({
   id: z.number()
 });
