@@ -78,7 +78,8 @@ class AuthController {
       await saveAuthToken(user.id, tokens);
 
       return res.json(tokens);
-    } catch (e) {
+    } catch (err) {
+      console.error(err);
       return apiValidationError(res, 'token', 'Invalid refresh token');
     }
   }
