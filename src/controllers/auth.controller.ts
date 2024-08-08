@@ -6,7 +6,7 @@ import {CreateUserDto} from "../dtos/CreateUser.dto";
 import {refreshTokenSchema, userCreateSchema, userLoginSchema} from "../lib/validation";
 import {CreateUserResponse, LoginUserResponse, RefreshTokenResponse} from "../types/declarations";
 import { Prisma } from '@prisma/client';
-import {apiValidationError, apiZodError} from "../lib/api";
+import {apiValidationError} from "../lib/api";
 import {findUserByRefreshToken, saveAuthToken} from "../services/authToken.service";
 
 class AuthController {
@@ -17,7 +17,7 @@ class AuthController {
     const validation = userCreateSchema.safeParse(req.body);
 
     if (!validation.success) {
-      return apiZodError(res, validation.error);
+      return apiValidationError(res, validation.error);
     }
 
     try {
@@ -39,7 +39,7 @@ class AuthController {
   public static async login(req: Request, res: Response<LoginUserResponse>) {
     const validation = userLoginSchema.safeParse(req.body);
     if (!validation.success) {
-      return apiZodError(res, validation.error);
+      return apiValidationError(res, validation.error);
     }
 
     const {email, password} = req.body;
@@ -67,7 +67,7 @@ class AuthController {
   public static async refreshToken(req: Request, res: Response<RefreshTokenResponse>) {
     const validation = refreshTokenSchema.safeParse(req.body);
     if (!validation.success) {
-      return apiZodError(res, validation.error);
+      return apiValidationError(res, validation.error);
     }
 
     try {

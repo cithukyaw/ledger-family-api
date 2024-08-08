@@ -3,7 +3,7 @@ import {findUsers, getUserById} from "../services/user.service";
 import {singleUserSchema} from "../lib/validation";
 import {SingleUserResponse} from "../types/declarations";
 import {ParamIdToNumber} from "../lib/decorators";
-import {apiValidationError, apiZodError} from "../lib/api";
+import {apiValidationError} from "../lib/api";
 
 class UserController {
   /**
@@ -22,7 +22,7 @@ class UserController {
   public static async getUser(req: Request, res: Response<SingleUserResponse>) {
     const validation = singleUserSchema.safeParse(req.params);
     if (!validation.success) {
-      return apiZodError(res, validation.error);
+      return apiValidationError(res, validation.error);
     }
 
     const id = req.params.id as unknown as number;
