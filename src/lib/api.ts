@@ -2,7 +2,11 @@ import {Response} from 'express';
 import {ApiError} from "../types/declarations";
 import {ZodError} from "zod";
 
-export const apiValidationError = (res: Response, field: ZodError | string, message: string = ''): Response<ApiError> => {
+export const apiValidationError = (
+  res: Response, field: ZodError | string,
+  message: string = '',
+  code: number = 400
+): Response<ApiError> => {
   const json: ApiError[] = [];
 
   if (field instanceof ZodError) {
@@ -14,5 +18,5 @@ export const apiValidationError = (res: Response, field: ZodError | string, mess
     json.push({ field, message });
   }
 
-  return res.status(400).json(json);
+  return res.status(code).json(json);
 };
