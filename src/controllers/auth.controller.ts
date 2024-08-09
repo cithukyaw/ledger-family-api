@@ -3,7 +3,7 @@ import {generateTokens} from "../lib/jwt";
 import bcrypt from "bcryptjs";
 import {createUser, getUserByEmail} from "../services/user.service";
 import {CreateUserDto} from "../dtos/CreateUser.dto";
-import {refreshTokenSchema, userCreateSchema, userLoginSchema} from "../lib/validation";
+import {refreshTokenSchema, userCreateSchema, userLoginSchema} from "../validations/user.validation";
 import {CreateUserResponse, LoginUserResponse, RefreshTokenResponse} from "../types/declarations";
 import { Prisma } from '@prisma/client';
 import {apiValidationError} from "../lib/api";
