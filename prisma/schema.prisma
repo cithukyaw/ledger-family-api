@@ -14,9 +14,9 @@ model User {
   email     String    @unique(map: "User_email_key") @db.VarChar(100)
   role      String    @db.VarChar(10)
   active    Boolean   @default(true)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime?
-  deletedAt DateTime?
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
 
   tokens    AuthToken[]
   @@map("users")
@@ -24,12 +24,12 @@ model User {
 
 model AuthToken {
   id            Int       @id @default(autoincrement())
-  userId        Int
-  accessToken   String    @db.VarChar(255)
-  refreshToken  String    @db.VarChar(255)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime?
-  deletedAt     DateTime?
+  userId        Int       @map("user_id")
+  accessToken   String    @db.VarChar(255) @map("access_token")
+  refreshToken  String    @db.VarChar(255) @map("refresh_token")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime? @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
 
   user          User @relation(fields: [userId], references: [id])
   @@map("auth_tokens")
@@ -38,9 +38,9 @@ model AuthToken {
 model Category {
   id        Int       @id @default(autoincrement())
   name      String    @unique @db.VarChar(150)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime?
-  deletedAt DateTime?
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
 
   @@map("categories")
 }
