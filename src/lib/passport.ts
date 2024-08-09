@@ -1,6 +1,5 @@
 import {ExtractJwt, Strategy as JwtStrategy} from "passport-jwt";
 import passport from "passport";
-import {PrismaClient} from "@prisma/client";
 import {getUserById} from "../services/user.service";
 
 const opts = {
@@ -13,7 +12,7 @@ passport.use(
     try {
       const user = await getUserById(payload.id);
       if (user) {
-        return done(null, user);
+        return done(null, user.id);
       }
 
       return done(null, false);
