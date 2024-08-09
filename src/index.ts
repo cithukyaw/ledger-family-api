@@ -1,6 +1,7 @@
 import express, {Request, Response} from 'express';
 import userRouter from "./routes/users";
 import authRouter from "./routes/auth";
+import expenseRouter from "./routes/expenses";
 import bodyParser from 'body-parser';
 import passport from "./lib/passport";
 
@@ -29,6 +30,7 @@ app.get('/healthcheck', (req: Request, res: Response) => {
 // API routes
 app.use('/api/auth', authRouter);
 app.use('/api/users', authMiddleware, userRouter);
+app.use('/api/expenses', authMiddleware, expenseRouter);
 
 // Start the server
 app.listen(PORT, () => {

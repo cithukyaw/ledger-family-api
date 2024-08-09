@@ -4,8 +4,8 @@ API backend for LedgerFamily app
 
 **Tech Stack:**
 - Express.js + Typescript
-- Prisma
-- Passport
+- Prisma ORM
+- Passport.js
 - MySQL
 
 
@@ -16,5 +16,5 @@ API backend for LedgerFamily app
 ## Production
 
     npm build
-    
+
     npm serve
