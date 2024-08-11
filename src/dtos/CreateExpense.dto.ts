@@ -5,4 +5,4 @@ import {expenseCreateSchema} from "../validations/expense.validation";
 export type CreateExpenseDto = z.infer<typeof expenseCreateSchema>
 
 // Extend the inferred type with the additional field
-export type CreateExpenseDtoWithUserId = CreateExpenseDto & { userId: number };
+export type CreateExpenseDtoWithUserId = CreateExpenseDto & { userId: number } & { type: string };

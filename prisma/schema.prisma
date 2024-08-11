@@ -51,6 +51,7 @@ model Expense {
   id          Int       @id @default(autoincrement())
   userId      Int       @map("user_id")
   categoryId  Int?      @map("category_id")
+  type        String?   @db.VarChar(10)
   date        DateTime  @db.Date
   title       String    @db.VarChar(255)
   amount      Int       @db.UnsignedInt
