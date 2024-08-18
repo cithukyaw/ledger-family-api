@@ -1,5 +1,9 @@
 import { z } from 'zod';
 
+export const emailSchema = z.object({
+  email: z.string().max(255).email(),
+});
+
 export const userCreateSchema = z.object({
   name: z.string().max(255).optional(),
   email: z.string().max(100).email(),

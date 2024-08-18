@@ -3,13 +3,36 @@ import {generateTokens} from "../lib/jwt";
 import bcrypt from "bcryptjs";
 import {createUser, getUserByEmail} from "../services/user.service";
 import {CreateUserDto} from "../dtos/CreateUser.dto";
-import {refreshTokenSchema, userCreateSchema, userLoginSchema} from "../validations/user.validation";
-import {CreateUserResponse, LoginUserResponse, RefreshTokenResponse} from "../types/declarations";
+import {emailSchema, refreshTokenSchema, userCreateSchema, userLoginSchema} from "../validations/user.validation";
+import {
+  CreateUserResponse,
+  LoginUserResponse, PreCheckLoginResponse,
+  RefreshTokenResponse
+} from "../types/declarations";
 import { Prisma } from '@prisma/client';
 import {apiValidationError} from "../lib/api";
 import {findUserByRefreshToken, saveAuthToken} from "../services/authToken.service";
 
 class AuthController {
+  /**
+   * Check registering email is available or not
+   * Return 400 if the email address is not available
+   * Return 203 if the email address is available
+   */
+  public static async checkAvailability(req: Request, res: Response) {
+    const validation = emailSchema.safeParse(req.body);
+    if (!validation.success) {
+      return apiValidationError(res, validation.error);
+    }
+
+    const user = await getUserByEmail(req.body.email);
+    if (user) {
+      return apiValidationError(res, 'email', 'This email address is already in use. Try another one.');
+    }
+
+    return res.status(204).send();
+  }
+
   /**
    * Register a new user
    */
@@ -33,6 +56,24 @@ class AuthController {
     }
   }
 
+  /**
+   * Pre-check login if the login email address is valid
+   */
+  public static async preCheckLogin(req: Request, res: Response<PreCheckLoginResponse>) {
+    const validation = emailSchema.safeParse(req.body);
+    if (!validation.success) {
+      return apiValidationError(res, validation.error);
+    }
+
+    const user = await getUserByEmail(req.body.email);
+    if (!user) {
+      return apiValidationError(res, 'email', 'No registered user with this email address.');
+    }
+
+    return res.status(200).json({
+      id: user.id
+    });
+  }
   /**
    * Authenticate a user by email and password
    */

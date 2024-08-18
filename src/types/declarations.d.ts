@@ -18,7 +18,12 @@ export type User = {
   active: boolean;
 }
 
+export type UserIdType = {
+  id: number
+}
+
 export type CreateUserResponse = UserModel | ApiError[];
+export type PreCheckLoginResponse = UserIdType | ApiError[];
 export type LoginUserResponse = UserTokens | ApiError[];
 export type RefreshTokenResponse = UserTokens | ApiError[];
 export type SingleUserResponse = User | ApiError[];
