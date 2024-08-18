@@ -1,6 +1,6 @@
 # LedgerFamily API
 
-API backend for LedgerFamily app
+API backend for [LedgerFamily app](https://github.com/dev-sithu/ledger-family-app) which tracks expenses and manages budget effectively.
 
 **Tech Stack:**
 - Express.js + Typescript
