@@ -4,9 +4,18 @@ import authRouter from "./routes/auth";
 import expenseRouter from "./routes/expenses";
 import bodyParser from 'body-parser';
 import passport from "./lib/passport";
+import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+if (process.env.FE_URL) {
+  const allowedOrigins = [process.env.FE_URL]
+  const corsOptions: cors.CorsOptions = {
+    origin: allowedOrigins
+  };
+  app.use(cors(corsOptions)); // use CORS
+}
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
