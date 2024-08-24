@@ -1,4 +1,4 @@
-import express, {Request, Response} from 'express';
+import express, {NextFunction, Request, Response} from 'express';
 import userRouter from "./routes/users";
 import authRouter from "./routes/auth";
 import expenseRouter from "./routes/expenses";
@@ -12,7 +12,8 @@ const PORT = process.env.PORT || 3000;
 if (process.env.FE_URL) {
   const allowedOrigins = [process.env.FE_URL]
   const corsOptions: cors.CorsOptions = {
-    origin: allowedOrigins
+    origin: allowedOrigins,
+    credentials: true, // Allow credentials (cookies, authorization headers)
   };
   app.use(cors(corsOptions)); // use CORS
 }
@@ -25,6 +26,13 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 
 const authMiddleware = passport.authenticate('jwt', { session: false });
+
+// Allow specific headers and methods globally
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 
 // Main page
 app.get('/', (req: Request, res: Response) => {
