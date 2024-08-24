@@ -4,9 +4,9 @@
   "description": "The family ledger management API",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./src/index.ts",
+    "start": "cross-env NODE_ENV=development nodemon ./src/index.ts",
     "build": "tsc --build",
-    "serve": "node ./build/index.js",
+    "serve": "cross-env NODE_ENV=production node ./build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "prisma": {
@@ -31,6 +31,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^22.0.0",
     "@types/passport-jwt": "^4.0.1",
+    "cross-env": "^7.0.3",
     "nodemon": "^3.1.4",
     "prisma": "^5.18.0",
     "ts-node": "^10.9.2",
