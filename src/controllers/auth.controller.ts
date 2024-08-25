@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import {generateTokens} from "../lib/jwt";
+import {generateTokens, saveTokenInCookie} from "../lib/jwt";
 import bcrypt from "bcryptjs";
 import {createUser, getUserByEmail, exposeUser} from "../services/user.service";
 import {CreateUserDto} from "../dtos/CreateUser.dto";
@@ -96,6 +96,7 @@ class AuthController {
     }
 
     const tokens = generateTokens(user);
+    saveTokenInCookie('jwt_token', tokens.accessToken, res);
 
     await saveAuthToken(user.id, tokens);
 
