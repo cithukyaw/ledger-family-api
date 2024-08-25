@@ -12,7 +12,7 @@ export const apiValidationError = (
   if (field instanceof ZodError) {
     field.issues.map(err => json.push({
       field: err.path[0].toString(),
-      message: `${err.path[0]}: ${err.message}`
+      message: `The ${err.path[0]} field: ${err.message}`
     }));
   } else {
     json.push({ field, message });
