@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import {generateTokens} from "../lib/jwt";
 import bcrypt from "bcryptjs";
-import {createUser, getUserByEmail} from "../services/user.service";
+import {createUser, getUserByEmail, exposeUser} from "../services/user.service";
 import {CreateUserDto} from "../dtos/CreateUser.dto";
 import {emailSchema, refreshTokenSchema, userCreateSchema, userLoginSchema} from "../validations/user.validation";
 import {
@@ -45,7 +45,7 @@ class AuthController {
 
     try {
       const createdUser = await createUser(req.body);
-      return res.status(201).send(createdUser);
+      return res.status(201).send(exposeUser(createdUser));
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         // The .code property can be accessed in a type-safe manner
@@ -99,7 +99,10 @@ class AuthController {
 
     await saveAuthToken(user.id, tokens);
 
-    res.json(tokens);
+    res.json({
+      user: exposeUser(user),
+      ...tokens
+    });
   }
 
   /**

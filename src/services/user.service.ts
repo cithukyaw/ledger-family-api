@@ -1,7 +1,8 @@
-import {PrismaClient} from "@prisma/client"
+import {PrismaClient, User as UserModel} from "@prisma/client"
 import {CreateUserDto} from "../dtos/CreateUser.dto";
 import {ROLE} from "../lib/constants";
 import {genSaltSync, hashSync} from "bcryptjs";
+import { User } from "../types/declarations";
 
 const prisma = new PrismaClient()
 
@@ -12,6 +13,11 @@ const publicUserFields = {
   role: true,
   active: true
 };
+
+export const exposeUser = (data: UserModel): User => {
+  const fields: string[] = Object.keys(publicUserFields);
+  return Object.fromEntries(Object.entries(data).filter(([k]) => fields.includes(k))) as User;
+}
 
 export const findUsers = () => {
   return prisma.user.findMany({

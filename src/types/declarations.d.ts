@@ -18,13 +18,17 @@ export type User = {
   active: boolean;
 }
 
+export type UserWithTokens = UserTokens & {
+  user: User;
+};
+
 export type UserIdType = {
   id: number
 }
 
-export type CreateUserResponse = UserModel | ApiError[];
+export type CreateUserResponse = User | ApiError[];
 export type PreCheckLoginResponse = UserIdType | ApiError[];
-export type LoginUserResponse = UserTokens | ApiError[];
+export type LoginUserResponse = UserWithTokens | ApiError[];
 export type RefreshTokenResponse = UserTokens | ApiError[];
 export type SingleUserResponse = User | ApiError[];
 
