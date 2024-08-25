@@ -87,12 +87,12 @@ class AuthController {
 
     const user = await getUserByEmail(email);
     if (!user) {
-      return apiValidationError(res, 'email', 'User not found');
+      return apiValidationError(res, 'email', 'User not found with this email address.');
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return apiValidationError(res, 'password', 'Invalid credentials');
+      return apiValidationError(res, 'password', 'Invalid password.');
     }
 
     const tokens = generateTokens(user);
