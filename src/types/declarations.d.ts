@@ -18,6 +18,10 @@ export type User = {
   active: boolean;
 }
 
+type UserFields = {
+  [K in keyof User]: true;
+}
+
 export type Category = {
   id: number;
   name: string;
@@ -35,6 +39,7 @@ export type UserIdType = {
   id: number
 }
 
+type UsersResponse = User[];
 export type CreateUserResponse = User | ApiError[];
 export type PreCheckLoginResponse = UserIdType | ApiError[];
 export type LoginUserResponse = UserWithTokens | ApiError[];

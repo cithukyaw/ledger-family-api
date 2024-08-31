@@ -2,11 +2,11 @@ import {PrismaClient, User as UserModel} from "@prisma/client"
 import {CreateUserDto} from "../dtos/CreateUser.dto";
 import {ROLE} from "../lib/constants";
 import {genSaltSync, hashSync} from "bcryptjs";
-import { User } from "../types/declarations";
+import {User, UserFields} from "../types/declarations";
 
 const prisma = new PrismaClient()
 
-const publicUserFields = {
+const publicUserFields: UserFields = {
   id: true,
   name: true,
   email: true,

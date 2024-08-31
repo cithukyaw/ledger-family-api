@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import {findUsers, getUserById} from "../services/user.service";
 import {singleUserSchema} from "../validations/user.validation";
-import {SingleUserResponse} from "../types/declarations";
+import {SingleUserResponse, UsersResponse} from "../types/declarations";
 import {ParamIdToNumber} from "../lib/decorators";
 import {apiValidationError} from "../lib/api";
 
@@ -9,7 +9,7 @@ class UserController {
   /**
    * Return all users
    */
-  public static async getUsers(req: Request, res: Response) {
+  public static async getUsers(req: Request, res: Response<UsersResponse>) {
     const users = await findUsers();
 
     return res.status(200).json(users);
