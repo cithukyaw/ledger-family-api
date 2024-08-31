@@ -1,16 +1,16 @@
 import {Expense, User as UserModel} from "@prisma/client";
 
-export interface ApiError {
+interface ApiError {
   field: string;
   message: string;
 }
 
-export interface UserTokens {
+interface UserTokens {
   accessToken: string;
   refreshToken: string;
 }
 
-export type User = {
+type User = {
   id: number;
   name: string | null;
   email: string;
@@ -22,7 +22,7 @@ type UserFields = {
   [K in keyof User]: true;
 }
 
-export type Category = {
+type Category = {
   id: number;
   name: string;
 }
@@ -31,21 +31,21 @@ type CategoryFields = {
   [K in keyof Category]: true;
 }
 
-export type UserWithTokens = UserTokens & {
+type UserWithTokens = UserTokens & {
   user: User;
 };
 
-export type UserIdType = {
+type UserIdType = {
   id: number
 }
 
 type UsersResponse = User[];
-export type CreateUserResponse = User | ApiError[];
-export type PreCheckLoginResponse = UserIdType | ApiError[];
-export type LoginUserResponse = UserWithTokens | ApiError[];
-export type RefreshTokenResponse = UserTokens | ApiError[];
-export type SingleUserResponse = User | ApiError[];
+type CreateUserResponse = User | ApiError[];
+type PreCheckLoginResponse = UserIdType | ApiError[];
+type LoginUserResponse = UserWithTokens | ApiError[];
+type RefreshTokenResponse = UserTokens | ApiError[];
+type SingleUserResponse = User | ApiError[];
 
-export type CreateExpenseResponse = Expense | ApiError[];
+type CreateExpenseResponse = Expense | ApiError[];
 
-export type CategoriesResponse = Category[];
+type CategoriesResponse = Category[];
