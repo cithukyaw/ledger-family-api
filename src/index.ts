@@ -2,6 +2,7 @@ import express, {NextFunction, Request, Response} from 'express';
 import userRouter from "./routes/users";
 import authRouter from "./routes/auth";
 import expenseRouter from "./routes/expenses";
+import categoryRouter from "./routes/categories";
 import bodyParser from 'body-parser';
 import passport from "./lib/passport";
 import cors from "cors";
@@ -51,6 +52,7 @@ app.get('/healthcheck', (req: Request, res: Response) => {
 app.use('/api/auth', authRouter);
 app.use('/api/users', authMiddleware, userRouter);
 app.use('/api/expenses', authMiddleware, expenseRouter);
+app.use('/api/categories', authMiddleware, categoryRouter);
 
 // Start the server
 app.listen(PORT, () => {

@@ -18,6 +18,15 @@ export type User = {
   active: boolean;
 }
 
+export type Category = {
+  id: number;
+  name: string;
+}
+
+type CategoryFields = {
+  [K in keyof Category]: true;
+}
+
 export type UserWithTokens = UserTokens & {
   user: User;
 };
@@ -33,3 +42,5 @@ export type RefreshTokenResponse = UserTokens | ApiError[];
 export type SingleUserResponse = User | ApiError[];
 
 export type CreateExpenseResponse = Expense | ApiError[];
+
+export type CategoriesResponse = Category[];
