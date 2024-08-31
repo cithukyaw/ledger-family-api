@@ -96,7 +96,10 @@ class AuthController {
     }
 
     const tokens = generateTokens(user);
-    saveTokenInCookie('jwt_token', tokens.accessToken, res);
+
+    if (process.env.JWT_COOKIE_NAME) {
+      saveTokenInCookie(process.env.JWT_COOKIE_NAME, tokens.accessToken, res);
+    }
 
     await saveAuthToken(user.id, tokens);
 

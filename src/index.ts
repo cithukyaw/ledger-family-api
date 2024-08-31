@@ -5,6 +5,7 @@ import expenseRouter from "./routes/expenses";
 import bodyParser from 'body-parser';
 import passport from "./lib/passport";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,6 +19,8 @@ if (process.env.FE_URL) {
   app.use(cors(corsOptions)); // use CORS
 }
 
+// Use cookie-parser to parse cookies
+app.use(cookieParser());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json

@@ -1,9 +1,20 @@
+import { Request } from 'express';
 import {ExtractJwt, Strategy as JwtStrategy} from "passport-jwt";
 import passport from "passport";
 import {getUserById} from "../services/user.service";
 
+// Custom cookie extractor function
+const jwtCookieExtractor = (req: Request) => {
+  let token = null;
+  if (req && req.cookies && typeof process.env.JWT_COOKIE_NAME === 'string') {
+    token = req.cookies[process.env.JWT_COOKIE_NAME]; // Extract the JWT token from the HTTP-only cookie
+  }
+
+  return token;
+};
+
 const opts = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  jwtFromRequest: process.env.JWT_COOKIE_NAME ? jwtCookieExtractor : ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.JWT_SECRET as string,
 }
 

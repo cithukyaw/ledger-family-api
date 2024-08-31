@@ -17,8 +17,8 @@ export const generateTokens = (user: User): UserTokens => {
 // Set the token in an HTTP-only cookie
 export const saveTokenInCookie = (name:string, token: string, res: Response) => {
   let expiry = 30;
-  if (typeof process.env.JWT_MAX_AGE === 'string') {
-    expiry = parseInt(process.env.JWT_MAX_AGE);
+  if (typeof process.env.JWT_COOKIE_MAX_AGE === 'string') {
+    expiry = parseInt(process.env.JWT_COOKIE_MAX_AGE);
   }
 
   res.cookie(name, token, {
