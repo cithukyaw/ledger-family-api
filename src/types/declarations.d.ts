@@ -1,4 +1,5 @@
-import {Expense, User as UserModel} from "@prisma/client";
+import {Expense} from "@prisma/client";
+import {PAY_TYPE} from "../lib/constants";
 
 interface ApiError {
   field: string;
@@ -49,3 +50,7 @@ type SingleUserResponse = User | ApiError[];
 type CreateExpenseResponse = Expense | ApiError[];
 
 type CategoriesResponse = Category[];
+
+type PaymentTypesResponse = {
+  [key in PAY_TYPE]: string
+}
