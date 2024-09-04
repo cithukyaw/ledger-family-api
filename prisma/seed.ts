@@ -27,11 +27,13 @@ const categories = async () => {
     'Purchase',
     'Bill',
     'Pharmacy',
-    'Travel',
+    'Transportation',
     'Health',
     'Mobile Top-up',
     'Charity',
-    'Family Eat-out'
+    'Family Eat-out',
+    'Food',
+    'Pocket Money'
   ];
 
   list.map(async (catName) => {
