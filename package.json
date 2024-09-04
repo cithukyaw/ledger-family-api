@@ -7,7 +7,8 @@
     "start": "cross-env NODE_ENV=development nodemon ./src/index.ts",
     "build": "tsc --build",
     "serve": "cross-env NODE_ENV=production node ./build/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "prisma db seed"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
