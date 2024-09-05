@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -54,7 +54,7 @@ model Expense {
   type        String?   @db.VarChar(10)
   date        DateTime  @db.Date
   title       String    @db.VarChar(255)
-  amount      Int       @db.UnsignedInt
+  amount      Int       @db.Integer
   remarks     String?   @db.VarChar(255)
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime? @map("updated_at")

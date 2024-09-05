@@ -6,7 +6,13 @@ API backend for [LedgerFamily app](https://github.com/dev-sithu/ledger-family-ap
 - [Express.js](https://expressjs.com/) + [Typescript](https://www.typescriptlang.org/)
 - [Prisma ORM](https://www.prisma.io/)
 - [Passport.js](https://www.passportjs.org/)
-- [MySQL](https://www.mysql.com/)
+- [PostgreSQL](https://www.postgresql.org/)
+
+## Setup
+
+    npm install
+    npm run migrate
+    npm run seed
 
 ## Development
 
