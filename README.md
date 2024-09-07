@@ -16,10 +16,9 @@ API backend for [LedgerFamily app](https://github.com/dev-sithu/ledger-family-ap
 
 ## Development
 
-    npm start
+    npm run dev
 
 ## Production
 
-    npm build
-
-    npm serve
+    npm run build
+    npm run prod
