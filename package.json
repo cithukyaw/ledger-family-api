@@ -4,12 +4,13 @@
   "description": "The family ledger management API",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development nodemon ./src/index.ts",
     "build": "tsc --build",
-    "serve": "cross-env NODE_ENV=production node ./build/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "migrate": "prisma migrate deploy",
-    "seed": "prisma db seed"
+    "seed": "prisma db seed",
+    "dev": "cross-env NODE_ENV=development nodemon ./src/index.ts",
+    "prod": "cross-env NODE_ENV=production node ./build/index.js",
+    "start": "npm run build && npm run migrate && npm run seed && npm run prod",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
@@ -40,5 +41,8 @@
     "prisma": "^5.18.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
+  },
+  "engines": {
+    "node": "20.x"
   }
 }
