@@ -40,6 +40,11 @@ type UserIdType = {
   id: number
 }
 
+type ListResponse = {
+  data: T[],
+  meta: JsonValue,
+}
+
 type UsersResponse = User[];
 type CreateUserResponse = User | ApiError[];
 type PreCheckLoginResponse = UserIdType | ApiError[];
@@ -48,6 +53,7 @@ type RefreshTokenResponse = UserTokens | ApiError[];
 type SingleUserResponse = User | ApiError[];
 
 type CreateExpenseResponse = Expense | ApiError[];
+type ExpensesResponse = ListResponse | ApiError[];
 
 type CategoriesResponse = Category[];
 

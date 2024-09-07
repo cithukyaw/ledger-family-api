@@ -22,9 +22,9 @@ export const exposeUser = (data: UserModel): User => {
 export const findUsers = () => {
   return prisma.user.findMany({
     select: publicUserFields,
-    orderBy: [{
-      createdAt: 'desc'
-    }]
+    orderBy: {
+      name: 'asc'
+    }
   });
 }
 

@@ -1,10 +1,11 @@
-import { PrismaClient } from "@prisma/client";
+import {Expense, PrismaClient} from "@prisma/client";
 import {CreateExpenseDtoWithUserId} from "../dtos/CreateExpense.dto";
 import {PAY_TYPE} from "../lib/constants";
+import {FilterExpenseDto} from "../dtos/FilterExpense.dto";
 
 const prisma = new PrismaClient();
 
-export const createExpense = async (expense: CreateExpenseDtoWithUserId) => {
+export const createExpense = async (expense: CreateExpenseDtoWithUserId): Promise<Expense> => {
   return prisma.expense.create({
     data: {
       userId: expense.userId,
@@ -16,4 +17,20 @@ export const createExpense = async (expense: CreateExpenseDtoWithUserId) => {
       remarks: expense.remarks || null,
     }
   });
+};
+
+export const findExpenses = async (filter: FilterExpenseDto): Promise<Expense[]> => {
+  return prisma.expense.findMany({
+    where: {
+      userId: filter.userId,
+      date: {
+        gte: new Date(filter.from),
+        lte: new Date(filter.to),
+      }
+    },
+    orderBy: [
+      { date: 'desc' },
+      { createdAt: 'asc' },
+    ]
+  })
 };

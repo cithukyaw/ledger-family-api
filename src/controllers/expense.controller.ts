@@ -1,12 +1,39 @@
 import {Request, Response} from "express";
-import {expenseCreateSchema} from "../validations/expense.validation";
+import {expenseCreateSchema, expenseFilterSchema} from "../validations/expense.validation";
 import {apiValidationError} from "../lib/api";
 import {CreateExpenseDto, CreateExpenseDtoWithUserId} from "../dtos/CreateExpense.dto";
-import {CreateExpenseResponse, PaymentTypesResponse} from "../types/declarations";
-import {createExpense} from "../services/expense.service";
+import {CreateExpenseResponse, ExpensesResponse, PaymentTypesResponse} from "../types/declarations";
+import {createExpense, findExpenses} from "../services/expense.service";
 import { PAY_TYPE } from "../lib/constants";
+import {FilterExpenseDto} from "../dtos/FilterExpense.dto";
+import {QueryStrToNumber} from "../lib/decorators";
+import {Expense} from "@prisma/client";
 
 class ExpenseController {
+  /**
+   * Get a list of expenses by range
+   */
+  @QueryStrToNumber('userId')
+  public static async getExpenses(req: Request<{}, {}, {}, FilterExpenseDto>, res: Response<ExpensesResponse>) {
+    const validation = expenseFilterSchema.safeParse(req.query);
+    if (!validation.success) {
+      return apiValidationError(res, validation.error);
+    }
+
+    if (req.user !== validation.data.userId) {
+      return apiValidationError(res, 'userId', 'Unauthorized user id.');
+    }
+
+    const data = await findExpenses(validation.data);
+
+    return res.status(200).json({
+      data,
+      meta: {
+        total: data.length
+      }
+    });
+  }
+
   /**
    * Create a new expense record
    */
@@ -19,7 +46,7 @@ class ExpenseController {
     const data = req.body as CreateExpenseDtoWithUserId;
     data.userId = req.user as number;
 
-    const createdExpense = await createExpense(data);
+    const createdExpense: Expense = await createExpense(data);
 
     return res.status(201).send(createdExpense);
   }
