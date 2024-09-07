@@ -10,7 +10,8 @@
     "dev": "cross-env NODE_ENV=development nodemon ./src/index.ts",
     "prod": "cross-env NODE_ENV=production node ./build/index.js",
     "start": "npm run build && npm run migrate && npm run seed && npm run prod",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "ts-node copy-env.ts"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
