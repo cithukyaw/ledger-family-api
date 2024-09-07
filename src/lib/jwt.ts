@@ -23,8 +23,8 @@ export const saveTokenInCookie = (name:string, token: string, res: Response) => 
 
   res.cookie(name, token, {
     httpOnly: true, // Prevent access via JavaScript
-    secure: process.env.NODE_ENV === 'production', // Only send cookie over HTTPS in production
-    sameSite: 'lax', // Helps protect against CSRF
+    secure: true, // Only send the cookie over HTTPS
+    sameSite: 'none', // Allow cross-site requests
     maxAge: expiry * 60 * 1000 // in millisecond
   });
 }
