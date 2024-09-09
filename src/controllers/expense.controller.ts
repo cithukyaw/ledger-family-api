@@ -26,10 +26,14 @@ class ExpenseController {
 
     const data = await findExpenses(validation.data);
 
+    const initialValue = 0;
+    const total = data.reduce((accumulator, row) => accumulator + row.amount, initialValue);
+
     return res.status(200).json({
       data,
       meta: {
-        total: data.length
+        count: data.length,
+        total,
       }
     });
   }
