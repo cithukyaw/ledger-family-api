@@ -28,6 +28,9 @@ export const findExpenses = async (filter: FilterExpenseDto): Promise<Expense[]>
         lte: new Date(filter.to),
       }
     },
+    include: {
+      category: true
+    },
     orderBy: [
       { date: 'desc' },
       { createdAt: 'asc' },
