@@ -13,3 +13,8 @@ export enum PAY_TYPE {
   KBZ_BANK  = 'kbz_bank',
   WAVE      = 'wave_pay',
 }
+
+export enum PAY_TYPE_GROUP {
+  CASH = 'cash',
+  BANK = 'bank',
+}

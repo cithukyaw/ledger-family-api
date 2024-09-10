@@ -3,8 +3,8 @@ import {expenseCreateSchema, expenseFilterSchema} from "../validations/expense.v
 import {apiValidationError} from "../lib/api";
 import {CreateExpenseDto, CreateExpenseDtoWithUserId} from "../dtos/CreateExpense.dto";
 import {CreateExpenseResponse, ExpensesResponse, PaymentTypesResponse} from "../types/declarations";
-import {createExpense, findExpenses} from "../services/expense.service";
-import { PAY_TYPE } from "../lib/constants";
+import {createExpense, findExpenses, findTotalByPaymentType} from "../services/expense.service";
+import {PAY_TYPE, PAY_TYPE_GROUP} from "../lib/constants";
 import {FilterExpenseDto} from "../dtos/FilterExpense.dto";
 import {QueryStrToNumber} from "../lib/decorators";
 import {Expense} from "@prisma/client";
@@ -25,6 +25,14 @@ class ExpenseController {
     }
 
     const data = await findExpenses(validation.data);
+    const totalCash = await findTotalByPaymentType({
+      ...validation.data,
+      type: PAY_TYPE_GROUP.CASH,
+    });
+    const totalBank = await findTotalByPaymentType({
+      ...validation.data,
+      type: PAY_TYPE_GROUP.BANK,
+    });
 
     const initialValue = 0;
     const total = data.reduce((accumulator, row) => accumulator + row.amount, initialValue);
@@ -34,6 +42,8 @@ class ExpenseController {
       meta: {
         count: data.length,
         total,
+        totalCash: totalCash ? totalCash : 0,
+        totalBank: totalBank ? totalBank : 0,
       }
     });
   }
