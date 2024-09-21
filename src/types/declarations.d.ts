@@ -54,6 +54,7 @@ type SingleUserResponse = User | ApiError[];
 
 type CreateExpenseResponse = Expense | ApiError[];
 type ExpensesResponse = ListResponse | ApiError[];
+type DeleteExpenseResponse = Expense | ApiError[];
 
 type CategoriesResponse = Category[];
 

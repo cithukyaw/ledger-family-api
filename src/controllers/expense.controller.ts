@@ -1,13 +1,18 @@
 import {Request, Response} from "express";
-import {expenseCreateSchema, expenseFilterSchema} from "../validations/expense.validation";
+import {expenseCreateSchema, expenseFilterSchema, singleExpenseSchema} from "../validations/expense.validation";
 import {apiValidationError} from "../lib/api";
 import {CreateExpenseDto, CreateExpenseDtoWithUserId} from "../dtos/CreateExpense.dto";
-import {CreateExpenseResponse, ExpensesResponse, PaymentTypesResponse} from "../types/declarations";
-import {createExpense, findExpenses, findTotalByPaymentType} from "../services/expense.service";
+import {
+  CreateExpenseResponse,
+  ExpensesResponse,
+  PaymentTypesResponse,
+  DeleteExpenseResponse,
+} from "../types/declarations";
+import {createExpense, deleteExpense, findExpenses, findTotalByPaymentType} from "../services/expense.service";
 import {PAY_TYPE, PAY_TYPE_GROUP} from "../lib/constants";
 import {FilterExpenseDto} from "../dtos/FilterExpense.dto";
-import {QueryStrToNumber} from "../lib/decorators";
-import {Expense} from "@prisma/client";
+import {ParamIdToNumber, QueryStrToNumber} from "../lib/decorators";
+import {Expense, Prisma} from "@prisma/client";
 
 class ExpenseController {
   /**
@@ -63,6 +68,35 @@ class ExpenseController {
     const createdExpense: Expense = await createExpense(data);
 
     return res.status(201).send(createdExpense);
+  }
+
+  /**
+   * Delete expense by id
+   */
+  @ParamIdToNumber()
+  public static async deleteExpense(req: Request, res: Response<DeleteExpenseResponse>) {
+    const validation = singleExpenseSchema.safeParse(req.params);
+    if (!validation.success) {
+      return apiValidationError(res, validation.error);
+    }
+
+    const id = req.params.id as unknown as number;
+
+    try {
+      const deleted = await deleteExpense(id);
+      return res.status(200).json(deleted);
+    } catch (err) {
+      if (err instanceof Error && (err as any).code === 'P2025') {
+        return apiValidationError(res, 'id', 'Expense record not found.');
+      }
+    }
+
+    return res.status(500).json([
+      {
+        field: 'id',
+        message: 'Something went wrong'
+      }
+    ]);
   }
 
   /**

@@ -73,3 +73,9 @@ export const findTotalByPaymentType = async (filter: FilterPaymentTypeDto): Prom
 
   return aggregations._sum.amount;
 }
+
+export const deleteExpense = async (id: number): Promise<Expense> => {
+  return prisma.expense.delete({
+    where: { id }
+  })
+}
