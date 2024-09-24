@@ -58,6 +58,8 @@ type DeleteExpenseResponse = Expense | ApiError[];
 
 type CategoriesResponse = Category[];
 
+type CreateLedgerResponse = Ledger | ApiError[];
+
 type PaymentTypesResponse = {
   [key in PAY_TYPE]: string
 }

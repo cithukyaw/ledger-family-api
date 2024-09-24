@@ -3,7 +3,8 @@ import {ApiError} from "../types/declarations";
 import {ZodError} from "zod";
 
 export const apiValidationError = (
-  res: Response, field: ZodError | string,
+  res: Response,
+  field: ZodError | string,
   message: string = '',
   code: number = 400
 ): Response<ApiError> => {

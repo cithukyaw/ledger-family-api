@@ -3,6 +3,7 @@ import userRouter from "./routes/users";
 import authRouter from "./routes/auth";
 import expenseRouter from "./routes/expenses";
 import categoryRouter from "./routes/categories";
+import ledgerRouter from "./routes/ledger";
 import bodyParser from 'body-parser';
 import passport from "./lib/passport";
 import cors from "cors";
@@ -53,6 +54,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/users', authMiddleware, userRouter);
 app.use('/api/expenses', authMiddleware, expenseRouter);
 app.use('/api/categories', authMiddleware, categoryRouter);
+app.use('/api/ledgers', authMiddleware, ledgerRouter);
 
 // Start the server
 app.listen(PORT, () => {
