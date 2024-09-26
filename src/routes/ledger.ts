@@ -4,6 +4,6 @@ import LedgerController from "../controllers/ledger.controller";
 const router = Router();
 
 // POST /api/ledgers
-router.post('/', LedgerController.createLedger);
+router.post('/', LedgerController.upsert);
 
 export default router;

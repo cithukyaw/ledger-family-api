@@ -1,7 +1,7 @@
 import {Expense, PrismaClient} from "@prisma/client";
 import {CreateExpenseDtoWithUserId} from "../dtos/CreateExpense.dto";
 import {PAY_TYPE, PAY_TYPE_GROUP} from "../lib/constants";
-import {FilterExpenseDto, FilterPaymentTypeDto} from "../dtos/FilterExpense.dto";
+import {FilterExpenseDto, FilterMonthlyExpensesDto, FilterPaymentTypeDto} from "../dtos/FilterExpense.dto";
 
 const prisma = new PrismaClient();
 
@@ -78,4 +78,18 @@ export const deleteExpense = async (id: number): Promise<Expense> => {
   return prisma.expense.delete({
     where: { id }
   })
+}
+
+export const findMonthlyExpenses = async ({ userId, from, to }: FilterMonthlyExpensesDto): Promise<{ totalCash: number; totalBank: number }> => {
+  const totalCash = await findTotalByPaymentType({
+    userId, from, to,
+    type: PAY_TYPE_GROUP.CASH
+  }) || 0;
+
+  const totalBank = await findTotalByPaymentType({
+    userId, from, to,
+    type: PAY_TYPE_GROUP.BANK
+  }) || 0;
+
+  return {totalCash, totalBank};
 }

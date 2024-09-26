@@ -1,45 +1,85 @@
 import {Ledger, PrismaClient} from "@prisma/client";
 import {CreateLedgerDto} from "../dtos/CreateLedger.dto";
-import {findTotalByPaymentType} from "./expense.service";
-import {PAY_TYPE_GROUP} from "../lib/constants";
+import {findMonthlyExpenses} from "./expense.service";
 import dayjs from "dayjs";
 
 const prisma = new PrismaClient();
 
-export const createLedger = async (data: CreateLedgerDto): Promise<Ledger> => {
+export const upsertLedger = async (data: CreateLedgerDto): Promise<Ledger> => {
   const from = dayjs(data.date).startOf('month').format('YYYY-MM-DD');
   const to = dayjs(data.date).endOf('month').format('YYYY-MM-DD');
 
-  const totalCash = await findTotalByPaymentType({
-    userId: data.userId,
-    type: PAY_TYPE_GROUP.CASH,
-    from,
-    to
-  }) as number;
+  const ledger = await prisma.ledger.findFirst({
+    where: {
+      userId: data.userId,
+      date: new Date(from)
+    }
+  });
 
-  const totalBank = await findTotalByPaymentType({
+  const { totalCash, totalBank } = await findMonthlyExpenses({
     userId: data.userId,
-    type: PAY_TYPE_GROUP.BANK,
     from,
     to
-  }) as number;
+  });
 
   const monthlyCost = data.budget + data.parentSupport + totalBank;
 
-  return prisma.ledger.create({
+  const upsertData = {
+    userId: data.userId,
+    date: new Date(from),
+    current: data.current,
+    income: data.income,
+    parentSupport: data.parentSupport,
+    budget: data.budget,
+    grossSaving: data.income - (data.parentSupport + data.budget),
+    expenseCash: totalCash,
+    expenseBank: totalBank,
+    cost: monthlyCost,
+    netSaving: data.income - monthlyCost,
+    balance: data.current - monthlyCost
+  };
+
+  if (ledger) {
+    return prisma.ledger.update({
+      where: {
+        id: ledger.id
+      },
+      data: upsertData
+    });
+  } else {
+    return prisma.ledger.create({
+      data: upsertData
+    });
+  }
+}
+
+/**
+ * Update ledger whenever expenses are added, updated or deleted
+ */
+export const updateLedger = async (userId: number, date: string): Promise<Ledger> => {
+  const from = dayjs(date).startOf('month').format('YYYY-MM-DD');
+  const to = dayjs(date).endOf('month').format('YYYY-MM-DD');
+
+  const ledger = await prisma.ledger.findFirstOrThrow({
+    where: {
+      userId,
+      date: new Date(from)
+    }
+  });
+
+  const { totalCash, totalBank } = await findMonthlyExpenses({ userId, from, to });
+  const monthlyCost = ledger.budget + ledger.parentSupport + totalBank;
+
+  return prisma.ledger.update({
+    where: {
+      id: ledger.id
+    },
     data: {
-      userId: data.userId,
-      date: new Date(data.date),
-      current: data.current,
-      income: data.income,
-      parentSupport: data.parentSupport,
-      budget: data.budget,
-      grossSaving: data.income - (data.parentSupport + data.budget),
       expenseCash: totalCash,
       expenseBank: totalBank,
       cost: monthlyCost,
-      netSaving: data.income - monthlyCost,
-      balance: data.current - monthlyCost
+      netSaving: ledger.income - monthlyCost,
+      balance: ledger.current - monthlyCost
     }
   });
 }

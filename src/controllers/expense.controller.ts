@@ -12,7 +12,9 @@ import {createExpense, deleteExpense, findExpenses, findTotalByPaymentType} from
 import {PAY_TYPE, PAY_TYPE_GROUP} from "../lib/constants";
 import {FilterExpenseDto} from "../dtos/FilterExpense.dto";
 import {ParamIdToNumber, QueryStrToNumber} from "../lib/decorators";
-import {Expense, Prisma} from "@prisma/client";
+import {Expense} from "@prisma/client";
+import {updateLedger} from "../services/ledger.service";
+import dayjs from "dayjs";
 
 class ExpenseController {
   /**
@@ -66,6 +68,9 @@ class ExpenseController {
     data.userId = req.user as number;
 
     const createdExpense: Expense = await createExpense(data);
+    if (createdExpense) {
+      await updateLedger(data.userId, data.date);
+    }
 
     return res.status(201).send(createdExpense);
   }
@@ -84,6 +89,9 @@ class ExpenseController {
 
     try {
       const deleted = await deleteExpense(id);
+
+      await updateLedger(deleted.userId, dayjs(deleted.date).format('YYYY-MM-DD'));
+
       return res.status(200).json(deleted);
     } catch (err) {
       if (err instanceof Error && (err as any).code === 'P2025') {
