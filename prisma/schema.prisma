@@ -15,7 +15,7 @@ model User {
   role      String    @db.VarChar(10)
   active    Boolean   @default(true)
   createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime? @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
   tokens    AuthToken[]
@@ -30,7 +30,7 @@ model AuthToken {
   accessToken   String    @db.VarChar(255) @map("access_token")
   refreshToken  String    @db.VarChar(255) @map("refresh_token")
   createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime? @map("updated_at")
+  updatedAt     DateTime? @updatedAt @map("updated_at")
   deletedAt     DateTime? @map("deleted_at")
 
   user          User @relation(fields: [userId], references: [id])
@@ -41,7 +41,7 @@ model Category {
   id        Int       @id @default(autoincrement())
   name      String    @unique @db.VarChar(150)
   createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime? @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
   expense   Expense[]
@@ -58,7 +58,7 @@ model Expense {
   amount      Int       @db.Integer
   remarks     String?   @db.VarChar(255)
   createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime? @map("updated_at")
+  updatedAt   DateTime? @updatedAt @map("updated_at")
   deletedAt   DateTime? @map("deleted_at")
 
   user        User @relation(fields: [userId], references: [id])
@@ -81,7 +81,7 @@ model Ledger {
   netSaving       Int       @default(0) @map("net_saving")
   balance         Int       @default(0)
   createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime? @map("updated_at")
+  updatedAt       DateTime? @updatedAt @map("updated_at")
   deletedAt       DateTime? @map("deleted_at")
 
   user            User @relation(fields: [userId], references: [id])
