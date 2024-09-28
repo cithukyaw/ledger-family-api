@@ -1,4 +1,4 @@
-import {Expense} from "@prisma/client";
+import {Expense, Ledger} from "@prisma/client";
 import {PAY_TYPE} from "../lib/constants";
 
 interface ApiError {
@@ -59,6 +59,7 @@ type DeleteExpenseResponse = Expense | ApiError[];
 type CategoriesResponse = Category[];
 
 type CreateLedgerResponse = Ledger | ApiError[];
+type SingleLedgerResponse = Ledger | ApiError[] | null;
 
 type PaymentTypesResponse = {
   [key in PAY_TYPE]: string

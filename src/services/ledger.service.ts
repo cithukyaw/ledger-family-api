@@ -1,20 +1,34 @@
 import {Ledger, PrismaClient} from "@prisma/client";
-import {CreateLedgerDto} from "../dtos/CreateLedger.dto";
+import {UpsertLedgerDto} from "../dtos/UpsertLedgerDto";
 import {findMonthlyExpenses} from "./expense.service";
 import dayjs from "dayjs";
 
 const prisma = new PrismaClient();
 
-export const upsertLedger = async (data: CreateLedgerDto): Promise<Ledger> => {
+export const findLedger = async (userId: number, date: string): Promise<Ledger | null> => {
+  return prisma.ledger.findFirst({
+    where: {
+      userId: userId,
+      date: new Date(date)
+    }
+  });
+}
+
+export const upsertLedger = async (data: UpsertLedgerDto): Promise<Ledger> => {
   const from = dayjs(data.date).startOf('month').format('YYYY-MM-DD');
   const to = dayjs(data.date).endOf('month').format('YYYY-MM-DD');
 
-  const ledger = await prisma.ledger.findFirst({
-    where: {
-      userId: data.userId,
-      date: new Date(from)
-    }
-  });
+  let ledger;
+  if (data.id) {
+    console.log('find ledger by id');
+    // find ledger by id
+    ledger = await prisma.ledger.findUnique({
+      where: { id: data.id }
+    })
+  } else {
+    // find ledger by userId and date
+    ledger = await findLedger(data.userId, from);
+  }
 
   const { totalCash, totalBank } = await findMonthlyExpenses({
     userId: data.userId,

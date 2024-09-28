@@ -1,17 +1,17 @@
 import {Request, Response} from "express";
-import {CreateLedgerResponse} from "../types/declarations";
+import {CreateLedgerResponse, SingleLedgerResponse} from "../types/declarations";
 import {apiValidationError} from "../lib/api";
 import {Ledger} from "@prisma/client";
 import {upsertLedger} from "../services/ledger.service";
-import {CreateLedgerDto} from "../dtos/CreateLedger.dto";
-import {ledgerCreateSchema} from "../validations/ledger.validation";
+import {UpsertLedgerDto} from "../dtos/UpsertLedgerDto";
+import {ledgerUpsertSchema} from "../validations/ledger.validation";
 
 class LedgerController {
   /**
    * Create a new ledger record
    */
-  public static async upsert(req: Request<{}, {}, CreateLedgerDto>, res: Response<CreateLedgerResponse>) {
-    const validation = ledgerCreateSchema.safeParse(req.body);
+  public static async upsert(req: Request<{}, {}, UpsertLedgerDto>, res: Response<CreateLedgerResponse>) {
+    const validation = ledgerUpsertSchema.safeParse(req.body);
     if (!validation.success) {
       return apiValidationError(res, validation.error);
     }

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
-export const ledgerCreateSchema = z.object({
+export const ledgerUpsertSchema = z.object({
+  id: z.number().optional(),
   userId: z.number(),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}/),
   current: z.number(),
