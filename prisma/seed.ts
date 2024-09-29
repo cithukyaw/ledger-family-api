@@ -31,9 +31,10 @@ const categories = async () => {
     'Health',
     'Mobile Top-up',
     'Charity',
-    'Family Eat-out',
+    'Eat Out',
     'Food',
-    'Pocket Money'
+    'Pocket Money',
+    'Wet Market',
   ];
 
   list.map(async (catName) => {
