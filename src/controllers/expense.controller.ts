@@ -14,7 +14,7 @@ import {
   deleteExpense,
   findExpenses,
   findTotalByPaymentType,
-  getExpenseById
+  getExpenseById, updateExpense
 } from "../services/expense.service";
 import {PAY_TYPE, PAY_TYPE_GROUP} from "../lib/constants";
 import {FilterExpenseDto} from "../dtos/FilterExpense.dto";
@@ -80,6 +80,28 @@ class ExpenseController {
     }
 
     return res.status(201).send(createdExpense);
+  }
+
+  /**
+   * Update the expense record
+   */
+  @ParamIdToNumber()
+  public static async updateExpense(req: Request<{id: number}, {}, CreateExpenseDto>, res: Response<CreateExpenseResponse>) {
+    const validation = expenseCreateSchema.safeParse(req.body);
+    if (!validation.success) {
+      return apiValidationError(res, validation.error);
+    }
+
+    const id = req.params.id as unknown as number;
+    const data = req.body as CreateExpenseDtoWithUserId;
+    data.userId = req.user as number;
+
+    const updatedExpense: Expense = await updateExpense(id, data);
+    if (updatedExpense) {
+      await updateLedger(data.userId, data.date);
+    }
+
+    return res.status(201).send(updatedExpense);
   }
 
   /**

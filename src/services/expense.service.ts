@@ -19,6 +19,21 @@ export const createExpense = async (expense: CreateExpenseDtoWithUserId): Promis
   });
 };
 
+export const updateExpense = async (id: number, expense: CreateExpenseDtoWithUserId): Promise<Expense> => {
+  return prisma.expense.update({
+    where: { id },
+    data: {
+      userId: expense.userId,
+      categoryId: expense.category || null,
+      type: expense.type || PAY_TYPE.CASH,
+      date: new Date(expense.date),
+      title: expense.title,
+      amount: expense.amount,
+      remarks: expense.remarks || null,
+    }
+  })
+};
+
 export const findExpenses = async (filter: FilterExpenseDto): Promise<Expense[]> => {
   return prisma.expense.findMany({
     where: {

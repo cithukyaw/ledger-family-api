@@ -7,6 +7,8 @@ const router = Router();
 router.get('/', ExpenseController.getExpenses);
 // POST /api/expenses
 router.post('/', ExpenseController.createExpense);
+// PUT /api/expenses/123
+router.put('/:id', ExpenseController.updateExpense);
 // GET /api/expenses/payment-types
 router.get('/payment-types', ExpenseController.getPaymentTypes);
 // GET /api/expenses/123

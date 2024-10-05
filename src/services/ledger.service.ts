@@ -70,16 +70,20 @@ export const upsertLedger = async (data: UpsertLedgerDto): Promise<Ledger> => {
 /**
  * Update ledger whenever expenses are added, updated or deleted
  */
-export const updateLedger = async (userId: number, date: string): Promise<Ledger> => {
+export const updateLedger = async (userId: number, date: string): Promise<Ledger | null> => {
   const from = dayjs(date).startOf('month').format('YYYY-MM-DD');
   const to = dayjs(date).endOf('month').format('YYYY-MM-DD');
 
-  const ledger = await prisma.ledger.findFirstOrThrow({
+  const ledger = await prisma.ledger.findFirst({
     where: {
       userId,
       date: new Date(from)
     }
   });
+
+  if (!ledger) {
+    return null;
+  }
 
   const { totalCash, totalBank } = await findMonthlyExpenses({ userId, from, to });
   const monthlyCost = ledger.budget + ledger.parentSupport + totalBank;
