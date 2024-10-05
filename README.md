@@ -1,6 +1,6 @@
-# LedgerFamily API [WIP]
+# LedgerFamily API
 
-API backend for [LedgerFamily app](https://github.com/dev-sithu/ledger-family-app) which tracks expenses and manages budget effectively.
+API backend for [LedgerFamily app](https://github.com/cithukyaw/ledger-family-app) which tracks expenses and manages budget effectively.
 
 **Tech Stack:**
 - [Express.js](https://expressjs.com/) + [Typescript](https://www.typescriptlang.org/)
@@ -19,6 +19,10 @@ API backend for [LedgerFamily app](https://github.com/dev-sithu/ledger-family-ap
     npm run dev
 
 ## Production
+
+    npm start
+
+or 
 
     npm run build
     npm run prod
