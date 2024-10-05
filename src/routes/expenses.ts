@@ -9,7 +9,9 @@ router.get('/', ExpenseController.getExpenses);
 router.post('/', ExpenseController.createExpense);
 // GET /api/expenses/payment-types
 router.get('/payment-types', ExpenseController.getPaymentTypes);
-// /api/expenses/123
+// GET /api/expenses/123
+router.get('/:id', ExpenseController.getExpense)
+// DEL /api/expenses/123
 router.delete('/:id', ExpenseController.deleteExpense)
 
 export default router;

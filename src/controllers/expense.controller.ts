@@ -4,11 +4,18 @@ import {apiValidationError} from "../lib/api";
 import {CreateExpenseDto, CreateExpenseDtoWithUserId} from "../dtos/CreateExpense.dto";
 import {
   CreateExpenseResponse,
+  DeleteExpenseResponse,
   ExpensesResponse,
   PaymentTypesResponse,
-  DeleteExpenseResponse,
+  SingleExpenseResponse,
 } from "../types/declarations";
-import {createExpense, deleteExpense, findExpenses, findTotalByPaymentType} from "../services/expense.service";
+import {
+  createExpense,
+  deleteExpense,
+  findExpenses,
+  findTotalByPaymentType,
+  getExpenseById
+} from "../services/expense.service";
 import {PAY_TYPE, PAY_TYPE_GROUP} from "../lib/constants";
 import {FilterExpenseDto} from "../dtos/FilterExpense.dto";
 import {ParamIdToNumber, QueryStrToNumber} from "../lib/decorators";
@@ -123,6 +130,26 @@ class ExpenseController {
     }
 
     return res.status(200).json(types);
+  }
+
+  /**
+   * Return an expense by id
+   */
+  @ParamIdToNumber()
+  public static async getExpense(req: Request, res: Response<SingleExpenseResponse>) {
+    const validation = singleExpenseSchema.safeParse(req.params);
+    if (!validation.success) {
+      return apiValidationError(res, validation.error);
+    }
+
+    const id = req.params.id as unknown as number;
+
+    const expense = await getExpenseById(id, req.user as number);
+    if (!expense) {
+      return apiValidationError(res, 'id', 'Expense not found');
+    }
+
+    return res.status(200).json(expense);
   }
 }
 

@@ -38,6 +38,15 @@ export const findExpenses = async (filter: FilterExpenseDto): Promise<Expense[]>
   })
 };
 
+export const getExpenseById = async (id: number, userId: number) => {
+  return prisma.expense.findUnique({
+    where: {
+      id,
+      userId
+    }
+  });
+}
+
 export const findTotalByPaymentType = async (filter: FilterPaymentTypeDto): Promise<number | null> => {
   let types: string[];
 
