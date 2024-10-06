@@ -2,7 +2,7 @@ import {Request, Response} from 'express';
 import {generateTokens, saveTokenInCookie} from "../lib/jwt";
 import bcrypt from "bcryptjs";
 import {createUser, getUserByEmail, exposeUser} from "../services/user.service";
-import {CreateUserDto} from "../dtos/CreateUser.dto";
+import {CreateUserDto} from "../dtos/User.dto";
 import {emailSchema, refreshTokenSchema, userCreateSchema, userLoginSchema} from "../validations/user.validation";
 import {
   CreateUserResponse,

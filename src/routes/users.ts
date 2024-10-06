@@ -3,11 +3,13 @@ import UserController from "../controllers/user.controller";
 
 const router = Router();
 
-// /api/users
+// GET /api/users
 router.get('/', UserController.getUsers)
-// /api/users/123
+// GET /api/users/123
 router.get('/:id', UserController.getUser)
-// /api/users/123/ledgers
+// PATCH /api/users/123
+router.patch('/:id', UserController.updateUser)
+// get /api/users/123/ledgers
 router.get('/:id/ledgers', UserController.getLedger)
 
 export default router;

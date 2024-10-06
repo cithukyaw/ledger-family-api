@@ -1,5 +1,5 @@
 import {PrismaClient, User as UserModel} from "@prisma/client"
-import {CreateUserDto} from "../dtos/CreateUser.dto";
+import {CreateUserDto, UpdateUserDto} from "../dtos/User.dto";
 import {ROLE} from "../lib/constants";
 import {genSaltSync, hashSync} from "bcryptjs";
 import {User, UserFields} from "../types/declarations";
@@ -35,9 +35,14 @@ export const getUserById = async (id: number) => {
   });
 }
 
-export const getUserByEmail = (email: string) => {
-  return prisma.user.findUnique({
-    where: { email }
+export const getUserByEmail = (email: string, except?: number) => {
+  return prisma.user.findFirst({
+    where: {
+      email,
+      id: {
+        not: except ? except : 0
+      }
+    }
   });
 }
 
@@ -52,4 +57,18 @@ export const createUser = async (user: CreateUserDto) => {
       active: true
     }
   });
+}
+
+export const updateUser = async (id: number, user: UpdateUserDto) => {
+  if (user.password) {
+    const salt = genSaltSync(10)
+    user.password = hashSync(user.password, salt);
+  }
+
+  return prisma.user.update({
+    where: { id },
+    data: {
+      ...user,
+    }
+  })
 }

@@ -10,6 +10,12 @@ export const userCreateSchema = z.object({
   password: z.string().min(6).max(20),
 });
 
+export const userUpdateSchema = z.object({
+  name: z.string().max(255),
+  email: z.string().max(100).email(),
+  password: z.string().min(6).max(20).optional(),
+});
+
 export const userLoginSchema = z.object({
   email: z.string().max(100).email(),
   password: z.string().min(6).max(20),
