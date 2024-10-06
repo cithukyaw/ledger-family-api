@@ -34,4 +34,6 @@ passport.use(
   })
 )
 
+export const authMiddleware = passport.authenticate('jwt', { session: false });
+
 export default passport;

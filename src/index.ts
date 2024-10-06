@@ -5,7 +5,7 @@ import expenseRouter from "./routes/expenses";
 import categoryRouter from "./routes/categories";
 import ledgerRouter from "./routes/ledger";
 import bodyParser from 'body-parser';
-import passport from "./lib/passport";
+import passport, {authMiddleware} from "./lib/passport";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -29,8 +29,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // initialize passport
 app.use(passport.initialize());
-
-const authMiddleware = passport.authenticate('jwt', { session: false });
 
 // Allow specific headers and methods globally
 app.use((req: Request, res: Response, next: NextFunction) => {

@@ -1,5 +1,6 @@
 import {Router} from "express";
 import AuthController from "../controllers/auth.controller";
+import {authMiddleware} from "../lib/passport";
 
 const router = Router();
 
@@ -13,5 +14,7 @@ router.post('/login/precheck', AuthController.preCheckLogin)
 router.post('/login', AuthController.login);
 // api/auth/refresh
 router.post('/refresh', AuthController.refreshToken);
+// api/auth/logout
+router.post('/logout', authMiddleware, AuthController.logout);
 
 export default router;

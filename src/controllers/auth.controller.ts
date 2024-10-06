@@ -1,13 +1,19 @@
 import {Request, Response} from 'express';
-import {generateTokens, saveTokenInCookie} from "../lib/jwt";
+import {deleteTokenCookie, generateTokens, saveTokenInCookie} from "../lib/jwt";
 import bcrypt from "bcryptjs";
 import {createUser, getUserByEmail, exposeUser} from "../services/user.service";
-import {CreateUserDto} from "../dtos/User.dto";
-import {emailSchema, refreshTokenSchema, userCreateSchema, userLoginSchema} from "../validations/user.validation";
+import {CreateUserDto, SingleUserDto} from "../dtos/User.dto";
+import {
+  emailSchema,
+  refreshTokenSchema,
+  singleUserSchema,
+  userCreateSchema,
+  userLoginSchema
+} from "../validations/user.validation";
 import {
   CreateUserResponse,
   LoginUserResponse, PreCheckLoginResponse,
-  RefreshTokenResponse
+  RefreshTokenResponse, SingleUserResponse
 } from "../types/declarations";
 import { Prisma } from '@prisma/client';
 import {apiValidationError} from "../lib/api";
@@ -103,7 +109,7 @@ class AuthController {
 
     await saveAuthToken(user.id, tokens);
 
-    res.json({
+    return res.json({
       user: exposeUser(user),
       ...tokens
     });
@@ -135,9 +141,22 @@ class AuthController {
   /**
    * Invalidate user session or token
    */
-  public static async logout(req: Request, res: Response) {
-    // TODO: implement logout logic
-    res.status(200).json({});
+  public static async logout(req: Request<{}, {}, {}, SingleUserDto>, res: Response<SingleUserResponse>) {
+    const validation = singleUserSchema.safeParse(req.body);
+    if (!validation.success) {
+      return apiValidationError(res, validation.error);
+    }
+
+    const { id } = req.body as SingleUserDto
+    if (req.user !== id) {
+      return apiValidationError(res, 'id', 'Unauthorized user id.');
+    }
+
+    if (process.env.JWT_COOKIE_NAME) {
+      deleteTokenCookie(process.env.JWT_COOKIE_NAME, res);
+    }
+
+    return res.status(204).json([]);
   }
 }
 

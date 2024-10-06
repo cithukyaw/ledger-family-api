@@ -32,10 +32,10 @@ class UserController {
 
     const id = req.params.id as unknown as number;
 
+
     if (req.user !== req.params.id) {
       return apiValidationError(res, 'id', 'Unauthorized user id.');
     }
-
     const user = await getUserById(id);
     if (!user) {
       return apiValidationError(res, 'id', 'User not found');

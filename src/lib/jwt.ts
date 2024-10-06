@@ -28,3 +28,13 @@ export const saveTokenInCookie = (name:string, token: string, res: Response) => 
     maxAge: expiry * 60 * 1000 // in millisecond
   });
 }
+
+// Delete the token cookie
+export const deleteTokenCookie = (name: string, res: Response) => {
+  res.cookie(name, '', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    expires: new Date(0), // Set the expiration date to a pastime to delete the cookie
+  });
+};
