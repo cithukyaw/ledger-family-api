@@ -17,7 +17,7 @@ class AuthController {
   /**
    * Check registering email is available or not
    * Return 400 if the email address is not available
-   * Return 203 if the email address is available
+   * Return 204 if the email address is available
    */
   public static async checkAvailability(req: Request, res: Response) {
     const validation = emailSchema.safeParse(req.body);

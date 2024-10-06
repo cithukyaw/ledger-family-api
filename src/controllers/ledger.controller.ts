@@ -8,7 +8,7 @@ import {ledgerUpsertSchema} from "../validations/ledger.validation";
 
 class LedgerController {
   /**
-   * Create a new ledger record
+   * Create/Update a ledger record
    */
   public static async upsert(req: Request<{}, {}, UpsertLedgerDto>, res: Response<CreateLedgerResponse>) {
     const validation = ledgerUpsertSchema.safeParse(req.body);
