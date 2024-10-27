@@ -48,3 +48,27 @@ export const QueryStrToNumber = (field: string) => {
     return descriptor;
   }
 }
+
+/**
+ * Change a type of the field value in query string from comma-separated string to array of numbers
+ */
+export const QueryStrToNumArray = (field: string) => {
+  return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
+    const originalMethod = descriptor.value;
+
+    descriptor.value = (req: Request, res: Response, next: NextFunction) => {
+      let numArr: number[] = [];
+      const csv = req.query[field] as string
+      if (csv) {
+        const strArr: string[] = csv.split(',');
+        numArr = strArr.map(val => parseInt(val, 10));
+      }
+
+      req.query[field] = numArr as any; // TypeScript requires 'as any' to bypass type checks here
+
+      return originalMethod.apply(this, [req, res, next]);
+    }
+
+    return descriptor;
+  }
+}

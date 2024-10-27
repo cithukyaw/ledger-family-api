@@ -1,4 +1,4 @@
-import {Expense, PrismaClient} from "@prisma/client";
+import {Expense, Prisma, PrismaClient} from "@prisma/client";
 import {CreateExpenseDtoWithUserId} from "../dtos/CreateExpense.dto";
 import {PAY_TYPE, PAY_TYPE_GROUP} from "../lib/constants";
 import {FilterExpenseDto, FilterMonthlyExpensesDto, FilterPaymentTypeDto} from "../dtos/FilterExpense.dto";
@@ -35,14 +35,20 @@ export const updateExpense = async (id: number, expense: CreateExpenseDtoWithUse
 };
 
 export const findExpenses = async (filter: FilterExpenseDto): Promise<Expense[]> => {
+  let condition: Prisma.ExpenseWhereInput = {
+    userId: filter.userId,
+    date: {
+      gte: new Date(filter.from),
+      lte: new Date(filter.to),
+    }
+  };
+
+  if (filter.category && filter.category.length > 0) {
+    condition.categoryId = { in: filter.category };
+  }
+
   return prisma.expense.findMany({
-    where: {
-      userId: filter.userId,
-      date: {
-        gte: new Date(filter.from),
-        lte: new Date(filter.to),
-      }
-    },
+    where: condition,
     include: {
       category: true
     },
@@ -79,20 +85,26 @@ export const findTotalByPaymentType = async (filter: FilterPaymentTypeDto): Prom
     ];
   }
 
+  let condition: Prisma.ExpenseWhereInput = {
+    userId: filter.userId,
+    date: {
+      gte: new Date(filter.from),
+      lte: new Date(filter.to),
+    },
+    type: {
+      in: types
+    }
+  };
+
+  if (filter.category && filter.category.length > 0) {
+    condition.categoryId = { in: filter.category };
+  }
+
   const aggregations = await prisma.expense.aggregate({
     _sum: {
       amount: true,
     },
-    where: {
-      userId: filter.userId,
-      date: {
-        gte: new Date(filter.from),
-        lte: new Date(filter.to),
-      },
-      type: {
-        in: types
-      }
-    }
+    where: condition
   });
 
   return aggregations._sum.amount;

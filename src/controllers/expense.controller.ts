@@ -18,7 +18,7 @@ import {
 } from "../services/expense.service";
 import {PAY_TYPE, PAY_TYPE_GROUP} from "../lib/constants";
 import {FilterExpenseDto} from "../dtos/FilterExpense.dto";
-import {ParamIdToNumber, QueryStrToNumber} from "../lib/decorators";
+import {ParamIdToNumber, QueryStrToNumArray, QueryStrToNumber} from "../lib/decorators";
 import {Expense} from "@prisma/client";
 import {updateLedger} from "../services/ledger.service";
 import dayjs from "dayjs";
@@ -28,6 +28,7 @@ class ExpenseController {
    * Get a list of expenses by range
    */
   @QueryStrToNumber('userId')
+  @QueryStrToNumArray('category')
   public static async getExpenses(req: Request<{}, {}, {}, FilterExpenseDto>, res: Response<ExpensesResponse>) {
     const validation = expenseFilterSchema.safeParse(req.query);
     if (!validation.success) {
