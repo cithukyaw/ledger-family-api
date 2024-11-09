@@ -16,6 +16,8 @@ export const expenseFilterSchema = z.object({
   from: z.string().regex(/^\d{4}-\d{2}-\d{2}/),
   to: z.string().regex(/^\d{4}-\d{2}/),
   category: z.number().array().optional(),
+  paymentType: z.string().optional(),
+  keyword: z.string().optional(),
 })
 
 export const singleExpenseSchema = z.object({

@@ -5,6 +5,37 @@ import {FilterExpenseDto, FilterMonthlyExpensesDto, FilterPaymentTypeDto} from "
 
 const prisma = new PrismaClient();
 
+const getExpenseWhere = (filter: FilterExpenseDto): Prisma.ExpenseWhereInput => {
+  let condition: Prisma.ExpenseWhereInput = {
+    userId: filter.userId,
+    date: {
+      gte: new Date(filter.from),
+      lte: new Date(filter.to),
+    },
+  };
+
+  if (filter.category && filter.category.length > 0) {
+    condition.categoryId = { in: filter.category };
+  }
+
+  if (filter.paymentType) {
+    condition.type = filter.paymentType === PAY_TYPE_GROUP.BANK ? { not: PAY_TYPE_GROUP.CASH } : PAY_TYPE_GROUP.CASH;
+  }
+
+  if (filter.keyword) {
+    condition.OR = [
+      {
+        title: { contains: filter.keyword },
+      },
+      {
+        remarks: { contains: filter.keyword }
+      },
+    ];
+  }
+
+  return condition;
+}
+
 export const createExpense = async (expense: CreateExpenseDtoWithUserId): Promise<Expense> => {
   return prisma.expense.create({
     data: {
@@ -35,20 +66,8 @@ export const updateExpense = async (id: number, expense: CreateExpenseDtoWithUse
 };
 
 export const findExpenses = async (filter: FilterExpenseDto): Promise<Expense[]> => {
-  let condition: Prisma.ExpenseWhereInput = {
-    userId: filter.userId,
-    date: {
-      gte: new Date(filter.from),
-      lte: new Date(filter.to),
-    }
-  };
-
-  if (filter.category && filter.category.length > 0) {
-    condition.categoryId = { in: filter.category };
-  }
-
   return prisma.expense.findMany({
-    where: condition,
+    where: getExpenseWhere(filter),
     include: {
       category: true
     },
@@ -69,42 +88,13 @@ export const getExpenseById = async (id: number, userId: number) => {
 }
 
 export const findTotalByPaymentType = async (filter: FilterPaymentTypeDto): Promise<number | null> => {
-  let types: string[];
-
-  if (filter.type === PAY_TYPE_GROUP.CASH) {
-    types = [PAY_TYPE.CASH];
-  } else {
-    types = [
-      PAY_TYPE.AYA_PAY,
-      PAY_TYPE.AYA_BANK,
-      PAY_TYPE.CB_PAY,
-      PAY_TYPE.CB_BANK,
-      PAY_TYPE.KPAY,
-      PAY_TYPE.KBZ_BANK,
-      PAY_TYPE.WAVE,
-    ];
-  }
-
-  let condition: Prisma.ExpenseWhereInput = {
-    userId: filter.userId,
-    date: {
-      gte: new Date(filter.from),
-      lte: new Date(filter.to),
-    },
-    type: {
-      in: types
-    }
-  };
-
-  if (filter.category && filter.category.length > 0) {
-    condition.categoryId = { in: filter.category };
-  }
+  filter.paymentType = filter.type;
 
   const aggregations = await prisma.expense.aggregate({
     _sum: {
       amount: true,
     },
-    where: condition
+    where: getExpenseWhere(filter)
   });
 
   return aggregations._sum.amount;

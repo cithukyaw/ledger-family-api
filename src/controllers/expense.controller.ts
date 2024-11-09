@@ -40,14 +40,22 @@ class ExpenseController {
     }
 
     const data = await findExpenses(validation.data);
-    const totalCash = await findTotalByPaymentType({
-      ...validation.data,
-      type: PAY_TYPE_GROUP.CASH,
-    });
-    const totalBank = await findTotalByPaymentType({
-      ...validation.data,
-      type: PAY_TYPE_GROUP.BANK,
-    });
+    let totalCash: number | null = 0;
+    let totalBank: number | null = 0;
+
+    if (validation.data.paymentType && validation.data.paymentType === PAY_TYPE_GROUP.CASH) {
+      totalCash = await findTotalByPaymentType({
+        ...validation.data,
+        type: PAY_TYPE_GROUP.CASH,
+      });
+    }
+
+    if (validation.data.paymentType && validation.data.paymentType === PAY_TYPE_GROUP.BANK) {
+      totalBank = await findTotalByPaymentType({
+        ...validation.data,
+        type: PAY_TYPE_GROUP.BANK,
+      });
+    }
 
     const initialValue = 0;
     const total = data.reduce((accumulator, row) => accumulator + row.amount, initialValue);
