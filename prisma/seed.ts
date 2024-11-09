@@ -32,9 +32,10 @@ const categories = async () => {
     'Mobile Top-up',
     'Charity',
     'Eat Out',
-    'Food',
+    'Food & Snacks',
     'Pocket Money',
     'Wet Market',
+    'Drinking Water'
   ];
 
   list.map(async (catName) => {
