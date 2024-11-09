@@ -43,14 +43,14 @@ class ExpenseController {
     let totalCash: number | null = 0;
     let totalBank: number | null = 0;
 
-    if (validation.data.paymentType && validation.data.paymentType === PAY_TYPE_GROUP.CASH) {
+    if (typeof validation.data.paymentType === 'undefined' || validation.data.paymentType === PAY_TYPE_GROUP.CASH) {
       totalCash = await findTotalByPaymentType({
         ...validation.data,
         type: PAY_TYPE_GROUP.CASH,
       });
     }
 
-    if (validation.data.paymentType && validation.data.paymentType === PAY_TYPE_GROUP.BANK) {
+    if (typeof validation.data.paymentType === 'undefined' || validation.data.paymentType === PAY_TYPE_GROUP.BANK) {
       totalBank = await findTotalByPaymentType({
         ...validation.data,
         type: PAY_TYPE_GROUP.BANK,
