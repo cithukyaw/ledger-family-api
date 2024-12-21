@@ -9,7 +9,7 @@ export const findLedger = async (userId: number, date: string): Promise<Ledger |
   return prisma.ledger.findFirst({
     where: {
       userId: userId,
-      date: new Date(date)
+      date,
     }
   });
 }
@@ -40,7 +40,7 @@ export const upsertLedger = async (data: UpsertLedgerDto): Promise<Ledger> => {
 
   const upsertData = {
     userId: data.userId,
-    date: new Date(from),
+    date: from,
     current: data.current,
     income: data.income,
     parentSupport: data.parentSupport,
@@ -77,7 +77,7 @@ export const updateLedger = async (userId: number, date: string): Promise<Ledger
   const ledger = await prisma.ledger.findFirst({
     where: {
       userId,
-      date: new Date(from)
+      date: from,
     }
   });
 

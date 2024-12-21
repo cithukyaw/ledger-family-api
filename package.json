@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc --build",
-    "migrate": "prisma migrate deploy",
+    "migrate": "prisma migrate deploy && prisma generate",
     "seed": "prisma db seed",
     "dev": "cross-env NODE_ENV=development nodemon ./src/index.ts",
     "prod": "cross-env NODE_ENV=production node ./build/index.js",

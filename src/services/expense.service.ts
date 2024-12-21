@@ -9,8 +9,8 @@ const getExpenseWhere = (filter: FilterExpenseDto): Prisma.ExpenseWhereInput => 
   let condition: Prisma.ExpenseWhereInput = {
     userId: filter.userId,
     date: {
-      gte: new Date(filter.from),
-      lte: new Date(filter.to),
+      gte: filter.from,
+      lte: filter.to,
     },
   };
 
@@ -42,7 +42,7 @@ export const createExpense = async (expense: CreateExpenseDtoWithUserId): Promis
       userId: expense.userId,
       categoryId: expense.category || null,
       type: expense.type || PAY_TYPE.CASH,
-      date: new Date(expense.date),
+      date: expense.date,
       title: expense.title,
       amount: expense.amount,
       remarks: expense.remarks || null,
@@ -57,7 +57,7 @@ export const updateExpense = async (id: number, expense: CreateExpenseDtoWithUse
       userId: expense.userId,
       categoryId: expense.category || null,
       type: expense.type || PAY_TYPE.CASH,
-      date: new Date(expense.date),
+      date: expense.date,
       title: expense.title,
       amount: expense.amount,
       remarks: expense.remarks || null,
