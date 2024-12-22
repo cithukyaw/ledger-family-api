@@ -50,7 +50,9 @@ export const upsertLedger = async (data: UpsertLedgerDto): Promise<Ledger> => {
     expenseBank: totalBank,
     cost: monthlyCost,
     netSaving: data.income - monthlyCost,
-    balance: data.current - monthlyCost
+    balance: data.current - monthlyCost,
+    exchangeRate: data.exchangeRate || null,
+    currency: data.currency || null,
   };
 
   if (ledger) {

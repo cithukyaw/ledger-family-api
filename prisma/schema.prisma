@@ -80,6 +80,8 @@ model Ledger {
   cost          Int       @default(0)
   netSaving     Int       @default(0) @map("net_saving")
   balance       Int       @default(0)
+  exchangeRate  Float?    @map("exchange_rate")
+  currency      String?   @db.VarChar(3)
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime? @updatedAt @map("updated_at")
   deletedAt     DateTime? @map("deleted_at")

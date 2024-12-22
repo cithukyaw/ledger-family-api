@@ -18,3 +18,9 @@ export enum PAY_TYPE_GROUP {
   CASH = 'cash',
   BANK = 'bank',
 }
+
+export enum CURRENCY {
+  YEN = 'YEN',
+  USD = 'USD',
+  SGD = 'SGD',
+}

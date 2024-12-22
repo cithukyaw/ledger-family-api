@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import {CURRENCY} from "../lib/constants";
 
 export const ledgerUpsertSchema = z.object({
   id: z.number().optional(),
@@ -7,5 +8,7 @@ export const ledgerUpsertSchema = z.object({
   current: z.number(),
   income: z.number(),
   parentSupport: z.number(),
-  budget: z.number()
+  budget: z.number(),
+  exchangeRate: z.preprocess(value => (value === '' ? undefined : value), z.number().optional()),
+  currency: z.nativeEnum(CURRENCY).optional(),
 });
