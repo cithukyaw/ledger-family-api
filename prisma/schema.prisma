@@ -86,6 +86,20 @@ model Ledger {
   updatedAt     DateTime? @updatedAt @map("updated_at")
   deletedAt     DateTime? @map("deleted_at")
   user          User      @relation(fields: [userId], references: [id])
+  budgets       Budget[]
 
   @@map("ledgers")
+}
+
+model Budget {
+  id            Int       @id @default(autoincrement())
+  ledgerId      Int       @map("ledger_id")
+  date          String    @db.VarChar(10)
+  amount        Int       @default(0)
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime? @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+  ledger        Ledger    @relation(fields: [ledgerId], references: [id])
+
+  @@map("budgets")
 }
