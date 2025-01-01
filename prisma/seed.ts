@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Budget, Ledger, PrismaClient } from "@prisma/client";
 import {genSaltSync, hashSync} from "bcryptjs";
 import {ROLE} from "../src/lib/constants";
 
@@ -49,9 +49,34 @@ const categories = async () => {
   })
 }
 
+const budgets = async () => {
+  const ledgers: Ledger[] = await prisma.ledger.findMany();
+  for (let row of ledgers) {
+    const budget: Budget | null = await prisma.budget.findFirst({
+      where: {
+        ledgerId: row.id
+      }
+    });
+
+    if (budget) {
+      continue;
+    }
+
+    await prisma.budget.create({
+      data: {
+        userId: row.userId,
+        ledgerId: row.id,
+        date: row.date,
+        amount: row.budget
+      }
+    })
+  }
+}
+
 const seed = async () => {
   await users();
   await categories();
+  await budgets();
 }
 
 seed()

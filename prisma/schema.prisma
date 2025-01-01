@@ -20,6 +20,7 @@ model User {
   tokens    AuthToken[]
   expenses  Expense[]
   ledgers   Ledger[]
+  budgets   Budget[]
 
   @@map("users")
 }
@@ -93,12 +94,14 @@ model Ledger {
 
 model Budget {
   id            Int       @id @default(autoincrement())
+  userId        Int       @map("user_id")
   ledgerId      Int       @map("ledger_id")
   date          String    @db.VarChar(10)
   amount        Int       @default(0)
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime? @updatedAt @map("updated_at")
   deletedAt     DateTime? @map("deleted_at")
+  user          User      @relation(fields: [userId], references: [id])
   ledger        Ledger    @relation(fields: [ledgerId], references: [id])
 
   @@map("budgets")

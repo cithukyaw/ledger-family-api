@@ -20,7 +20,6 @@ export const upsertLedger = async (data: UpsertLedgerDto): Promise<Ledger> => {
 
   let ledger;
   if (data.id) {
-    console.log('find ledger by id');
     // find ledger by id
     ledger = await prisma.ledger.findUnique({
       where: { id: data.id }
