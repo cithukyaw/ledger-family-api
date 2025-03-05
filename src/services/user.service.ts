@@ -49,12 +49,13 @@ export const getUserByEmail = (email: string, except?: number) => {
 export const createUser = async (user: CreateUserDto) => {
   const salt = genSaltSync(10)
   user.password = hashSync(user.password, salt);
+  user.name = user.email.split('@')[0];
 
   return prisma.user.create({
     data: {
       ...user,
       role: ROLE.MEMBER,
-      active: true
+      active: false
     }
   });
 }

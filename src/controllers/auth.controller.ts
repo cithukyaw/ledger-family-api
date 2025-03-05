@@ -76,6 +76,10 @@ class AuthController {
       return apiValidationError(res, 'email', 'No registered user with this email address.');
     }
 
+    if (!user.active) {
+      return apiValidationError(res, 'email', 'User is not active.');
+    }
+
     return res.status(200).json({
       id: user.id
     });
@@ -94,6 +98,10 @@ class AuthController {
     const user = await getUserByEmail(email);
     if (!user) {
       return apiValidationError(res, 'email', 'User not found with this email address.');
+    }
+
+    if (!user.active) {
+      return apiValidationError(res, 'email', 'User is not active.');
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
