@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express, {NextFunction, Request, Response} from 'express';
 import userRouter from "./routes/users";
 import authRouter from "./routes/auth";
