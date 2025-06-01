@@ -11,4 +11,5 @@ export const ledgerUpsertSchema = z.object({
   budget: z.number(),
   exchangeRate: z.preprocess(value => (value === '' ? undefined : value), z.number().optional()),
   currency: z.nativeEnum(CURRENCY).optional(),
+  remarks: z.string().max(500).optional(),
 });
