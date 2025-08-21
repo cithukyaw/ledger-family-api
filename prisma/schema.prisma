@@ -11,7 +11,7 @@ model User {
   id        Int         @id @default(autoincrement())
   name      String?     @db.VarChar(100)
   password  String      @db.VarChar(255)
-  email     String      @db.VarChar(100) @unique(map: "User_email_key")
+  email     String      @unique(map: "User_email_key") @db.VarChar(100)
   role      String      @db.VarChar(10)
   active    Boolean     @default(true)
   createdAt DateTime    @default(now()) @map("created_at")
@@ -28,8 +28,8 @@ model User {
 model AuthToken {
   id           Int       @id @default(autoincrement())
   userId       Int       @map("user_id")
-  accessToken  String    @db.VarChar(255) @map("access_token")
-  refreshToken String    @db.VarChar(255) @map("refresh_token")
+  accessToken  String    @map("access_token") @db.VarChar(255)
+  refreshToken String    @map("refresh_token") @db.VarChar(255)
   createdAt    DateTime  @default(now()) @map("created_at")
   updatedAt    DateTime? @updatedAt @map("updated_at")
   deletedAt    DateTime? @map("deleted_at")
@@ -40,7 +40,7 @@ model AuthToken {
 
 model Category {
   id        Int       @id @default(autoincrement())
-  name      String    @db.VarChar(150) @unique
+  name      String    @unique @db.VarChar(150)
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
@@ -71,16 +71,19 @@ model Ledger {
   id            Int       @id @default(autoincrement())
   userId        Int       @map("user_id")
   date          String    @db.VarChar(10)
-  current       Int       @default(0)
-  income        Int       @default(0)
+  current       Int       @default(0) // current (manual count without income for this month)
+  income        Int       @default(0) // total salary including income_penny
+  incomePenny   Int       @default(0) @map("income_penny") // a small sum of salary received in bank
   parentSupport Int       @default(0) @map("parent_support")
-  budget        Int       @default(0)
-  grossSaving   Int       @default(0) @map("gross_saving")
+  budget        Int       @default(0) // reserved money for expeses in each month
+  grossSaving   Int       @default(0) @map("gross_saving") // income - (parentSupport + budget),
   expenseCash   Int       @default(0) @map("expense_cash")
   expenseBank   Int       @default(0) @map("expense_bank")
-  cost          Int       @default(0)
-  netSaving     Int       @default(0) @map("net_saving")
-  balance       Int       @default(0)
+  cost          Int       @default(0) // budget + parentSupport + expenseBank
+  passiveIncome Int       @default(0) @map("passive_income") // additional income
+  netSaving     Int       @default(0) @map("net_saving") // income - cost
+  balance       Int       @default(0) // closing balance = current - cost
+  nextOpening   Int       @default(0) @map("next_opening") // closing balance + passiveIncome
   exchangeRate  Float?    @map("exchange_rate")
   currency      String?   @db.VarChar(3)
   remarks       String?   @db.VarChar(500)
@@ -94,16 +97,16 @@ model Ledger {
 }
 
 model Budget {
-  id            Int       @id @default(autoincrement())
-  userId        Int       @map("user_id")
-  ledgerId      Int       @map("ledger_id")
-  date          String    @db.VarChar(10)
-  amount        Int       @default(0)
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime? @updatedAt @map("updated_at")
-  deletedAt     DateTime? @map("deleted_at")
-  user          User      @relation(fields: [userId], references: [id])
-  ledger        Ledger    @relation(fields: [ledgerId], references: [id])
+  id        Int       @id @default(autoincrement())
+  userId    Int       @map("user_id")
+  ledgerId  Int       @map("ledger_id")
+  date      String    @db.VarChar(10)
+  amount    Int       @default(0)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  user      User      @relation(fields: [userId], references: [id])
+  ledger    Ledger    @relation(fields: [ledgerId], references: [id])
 
   @@map("budgets")
 }

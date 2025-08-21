@@ -36,20 +36,25 @@ export const upsertLedger = async (data: UpsertLedgerDto): Promise<Ledger> => {
   });
 
   const monthlyCost = data.budget + data.parentSupport + totalBank;
+  const closingBalance = data.current + data.income - monthlyCost;
+  const passiveIncome = data.passiveIncome ? data.passiveIncome : 0;
+  const incomePenny = data.incomePenny ? data.incomePenny : 0;
 
   const upsertData = {
-    userId: data.userId,
     date: from,
     current: data.current,
     income: data.income,
+    incomePenny,
     parentSupport: data.parentSupport,
     budget: data.budget,
     grossSaving: data.income - (data.parentSupport + data.budget),
     expenseCash: totalCash,
     expenseBank: totalBank,
     cost: monthlyCost,
+    passiveIncome,
     netSaving: data.income - monthlyCost,
-    balance: data.current - monthlyCost,
+    balance: closingBalance,
+    nextOpening: closingBalance + passiveIncome,
     exchangeRate: data.exchangeRate || null,
     currency: data.currency || null,
     remarks: data.remarks || null,
@@ -64,7 +69,7 @@ export const upsertLedger = async (data: UpsertLedgerDto): Promise<Ledger> => {
     });
   } else {
     return prisma.ledger.create({
-      data: upsertData
+      data: { ...upsertData, userId: data.userId }
     });
   }
 }
