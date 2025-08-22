@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import {deleteTokenCookie, generateTokens, saveTokenInCookie} from "../lib/jwt";
 import bcrypt from "bcryptjs";
-import {createUser, getUserByEmail, exposeUser} from "../services/user.service";
+import {createUser, exposeUser, getUserByEmail} from "../services/user.service";
 import {CreateUserDto, SingleUserDto} from "../dtos/User.dto";
 import {
   emailSchema,
@@ -12,10 +12,12 @@ import {
 } from "../validations/user.validation";
 import {
   CreateUserResponse,
-  LoginUserResponse, PreCheckLoginResponse,
-  RefreshTokenResponse, SingleUserResponse
+  LoginUserResponse,
+  PreCheckLoginResponse,
+  RefreshTokenResponse,
+  SingleUserResponse
 } from "../types/declarations";
-import { Prisma } from '@prisma/client';
+import {Prisma} from '@prisma/client';
 import {apiValidationError} from "../lib/api";
 import {findUserByRefreshToken, saveAuthToken} from "../services/authToken.service";
 

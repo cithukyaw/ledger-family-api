@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {CreateLedgerResponse, SingleLedgerResponse} from "../types/declarations";
+import {CreateLedgerResponse} from "../types/declarations";
 import {apiValidationError} from "../lib/api";
 import {Ledger} from "@prisma/client";
 import {upsertLedger} from "../services/ledger.service";

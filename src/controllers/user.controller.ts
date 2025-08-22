@@ -1,14 +1,13 @@
 import {Request, Response} from 'express';
 import {exposeUser, findUsers, getUserByEmail, getUserById, updateUser} from "../services/user.service";
 import {singleUserSchema, userLedgerQuerySchema, userUpdateSchema} from "../validations/user.validation";
-import {ApiError, SingleLedgerResponse, SingleUserResponse, UsersResponse} from "../types/declarations";
+import {SingleLedgerResponse, SingleUserResponse, UsersResponse} from "../types/declarations";
 import {ParamIdToNumber} from "../lib/decorators";
 import {apiValidationError} from "../lib/api";
 import {findLedger} from "../services/ledger.service";
 import dayjs from "dayjs";
 import {FilterLedgerParamDto, FilterLedgerQueryDto} from "../dtos/FilterLedgerDto";
-import {CreateUserDto, SingleUserDto, UpdateUserDto} from "../dtos/User.dto";
-import {User} from "@prisma/client";
+import {SingleUserDto, UpdateUserDto} from "../dtos/User.dto";
 
 class UserController {
   /**
