@@ -8,6 +8,10 @@ API backend for [LedgerFamily app](https://github.com/cithukyaw/ledger-family-ap
 - [Passport.js](https://www.passportjs.org/)
 - [PostgreSQL](https://www.postgresql.org/)
 
+## API Documentation
+
+API documentation is available at [API_DOC.md](API_DOC.md).
+
 ## Setup
 
     npm install
