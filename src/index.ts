@@ -59,7 +59,7 @@ app.use('/api/expenses', authMiddleware, expenseRouter);
 app.use('/api/categories', authMiddleware, categoryRouter);
 app.use('/api/ledgers', authMiddleware, ledgerRouter);
 app.use('/api/budgets', authMiddleware, budgetRouter);
-app.use('/api/passive-income', authMiddleware, passiveIncomeRouter);
+app.use('/api/passive-incomes', authMiddleware, passiveIncomeRouter);
 
 // Start the server
 app.listen(PORT, () => {
