@@ -30,15 +30,11 @@ export const upsertLedger = async (data: UpsertLedgerDto): Promise<Ledger> => {
     ledger = await findLedger(data.userId, from);
   }
 
-  const { totalCash, totalBank } = await findMonthlyExpenses({
-    userId: data.userId,
-    from,
-    to
-  });
+  const { totalCash, totalBank } = await findMonthlyExpenses({ userId: data.userId, from, to});
+  const passiveIncome = await findMonthlyPassiveIncome({ userId: data.userId, from, to });
 
   const monthlyCost = data.budget + data.parentSupport + totalBank;
   const closingBalance = data.current + data.income - monthlyCost;
-  const passiveIncome = data.passiveIncome ? data.passiveIncome : 0;
   const incomePenny = data.incomePenny ? data.incomePenny : 0;
 
   const upsertData = {
