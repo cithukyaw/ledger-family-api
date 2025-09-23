@@ -1,6 +1,6 @@
-import { PassiveIncome, Prisma, PrismaClient } from "@prisma/client";
-import { CreatePassiveIncomeDtoWithUserId } from "../dtos/CreatePassiveIncome.dto";
-import { FilterPassiveIncomeDto, FilterMonthlyPassiveIncomeDto } from "../dtos/FilterPassiveIncome.dto";
+import {PassiveIncome, Prisma, PrismaClient} from "@prisma/client";
+import {CreatePassiveIncomeDtoWithUserId} from "../dtos/CreatePassiveIncome.dto";
+import {FilterMonthlyPassiveIncomeDto, FilterPassiveIncomeDto} from "../dtos/FilterPassiveIncome.dto";
 
 const prisma = new PrismaClient();
 
@@ -86,9 +86,7 @@ export const deletePassiveIncome = async (id: number): Promise<PassiveIncome> =>
 }
 
 export const findMonthlyPassiveIncome = async ({ userId, from, to }: FilterMonthlyPassiveIncomeDto): Promise<number> => {
-  const total = await findTotalPassiveIncome({
+  return await findTotalPassiveIncome({
     userId, from, to
   }) || 0;
-
-  return total;
 }
