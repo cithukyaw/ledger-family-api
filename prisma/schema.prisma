@@ -8,19 +8,20 @@ datasource db {
 }
 
 model User {
-  id        Int         @id @default(autoincrement())
-  name      String?     @db.VarChar(100)
-  password  String      @db.VarChar(255)
-  email     String      @unique(map: "User_email_key") @db.VarChar(100)
-  role      String      @db.VarChar(10)
-  active    Boolean     @default(true)
-  createdAt DateTime    @default(now()) @map("created_at")
-  updatedAt DateTime?   @updatedAt @map("updated_at")
-  deletedAt DateTime?   @map("deleted_at")
-  tokens    AuthToken[]
-  expenses  Expense[]
-  ledgers   Ledger[]
-  budgets   Budget[]
+  id            Int             @id @default(autoincrement())
+  name          String?         @db.VarChar(100)
+  password      String          @db.VarChar(255)
+  email         String          @unique(map: "User_email_key") @db.VarChar(100)
+  role          String          @db.VarChar(10)
+  active        Boolean         @default(true)
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime?       @updatedAt @map("updated_at")
+  deletedAt     DateTime?       @map("deleted_at")
+  tokens        AuthToken[]
+  expenses      Expense[]
+  ledgers       Ledger[]
+  budgets       Budget[]
+  PassiveIncome PassiveIncome[]
 
   @@map("users")
 }
@@ -109,4 +110,19 @@ model Budget {
   ledger    Ledger    @relation(fields: [ledgerId], references: [id])
 
   @@map("budgets")
+}
+
+model PassiveIncome {
+  id        Int       @id @default(autoincrement())
+  userId    Int       @map("user_id")
+  date      String    @db.VarChar(10)
+  title     String    @db.VarChar(255)
+  amount    Int
+  type      String?   @db.VarChar(10)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@map("passive_incomes")
 }

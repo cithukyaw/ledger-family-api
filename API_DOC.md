@@ -31,7 +31,7 @@ All error responses follow this format:
 #### Check Email Availability
 Check if an email address is available for registration.
 
-**Endpoint:** `POST /auth/availability`  
+**Endpoint:** `POST /auth/availability`
 **Authentication:** Not required
 
 **Request Body:**
@@ -48,7 +48,7 @@ Check if an email address is available for registration.
 #### Register User
 Register a new user.
 
-**Endpoint:** `POST /auth/register`  
+**Endpoint:** `POST /auth/register`
 **Authentication:** Not required
 
 **Request Body:**
@@ -67,7 +67,7 @@ Register a new user.
 #### Pre-check Login
 Verify if an email exists and is active before login.
 
-**Endpoint:** `POST /auth/login/precheck`  
+**Endpoint:** `POST /auth/login/precheck`
 **Authentication:** Not required
 
 **Request Body:**
@@ -89,7 +89,7 @@ Verify if an email exists and is active before login.
 #### Login
 Authenticate a user with email and password.
 
-**Endpoint:** `POST /auth/login`  
+**Endpoint:** `POST /auth/login`
 **Authentication:** Not required
 
 **Request Body:**
@@ -120,7 +120,7 @@ Authenticate a user with email and password.
 #### Refresh Token
 Refresh JWT tokens using a refresh token.
 
-**Endpoint:** `POST /auth/refresh`  
+**Endpoint:** `POST /auth/refresh`
 **Authentication:** Not required
 
 **Request Body:**
@@ -143,7 +143,7 @@ Refresh JWT tokens using a refresh token.
 #### Logout
 Invalidate user session.
 
-**Endpoint:** `POST /auth/logout`  
+**Endpoint:** `POST /auth/logout`
 **Authentication:** Required
 
 **Request Body:**
@@ -162,7 +162,7 @@ Invalidate user session.
 #### Get All Users
 Retrieve a list of all users.
 
-**Endpoint:** `GET /users`  
+**Endpoint:** `GET /users`
 **Authentication:** Required
 
 **Responses:**
@@ -182,7 +182,7 @@ Retrieve a list of all users.
 #### Get User by ID
 Retrieve a specific user by ID.
 
-**Endpoint:** `GET /users/:id`  
+**Endpoint:** `GET /users/:id`
 **Authentication:** Required
 
 **Responses:**
@@ -202,7 +202,7 @@ Retrieve a specific user by ID.
 #### Update User
 Update user information.
 
-**Endpoint:** `PATCH /users/:id`  
+**Endpoint:** `PATCH /users/:id`
 **Authentication:** Required
 
 **Request Body:**
@@ -230,7 +230,7 @@ Update user information.
 #### Get User Ledger
 Retrieve a user's ledger for a specific date.
 
-**Endpoint:** `GET /users/:id/ledgers`  
+**Endpoint:** `GET /users/:id/ledgers`
 **Authentication:** Required
 
 **Query Parameters:**
@@ -245,7 +245,7 @@ Retrieve a user's ledger for a specific date.
 #### Get Expenses
 Retrieve a list of expenses based on filters.
 
-**Endpoint:** `GET /expenses`  
+**Endpoint:** `GET /expenses`
 **Authentication:** Required
 
 **Query Parameters:**
@@ -288,7 +288,7 @@ Retrieve a list of expenses based on filters.
 #### Create Expense
 Create a new expense record.
 
-**Endpoint:** `POST /expenses`  
+**Endpoint:** `POST /expenses`
 **Authentication:** Required
 
 **Request Body:**
@@ -311,7 +311,7 @@ Create a new expense record.
 #### Update Expense
 Update an existing expense record.
 
-**Endpoint:** `PUT /expenses/:id`  
+**Endpoint:** `PUT /expenses/:id`
 **Authentication:** Required
 
 **Request Body:**
@@ -334,7 +334,7 @@ Update an existing expense record.
 #### Get Expense by ID
 Retrieve a specific expense by ID.
 
-**Endpoint:** `GET /expenses/:id`  
+**Endpoint:** `GET /expenses/:id`
 **Authentication:** Required
 
 **Responses:**
@@ -345,7 +345,7 @@ Retrieve a specific expense by ID.
 #### Delete Expense
 Delete an expense by ID.
 
-**Endpoint:** `DELETE /expenses/:id`  
+**Endpoint:** `DELETE /expenses/:id`
 **Authentication:** Required
 
 **Responses:**
@@ -355,7 +355,7 @@ Delete an expense by ID.
 #### Get Payment Types
 Retrieve a list of payment types.
 
-**Endpoint:** `GET /expenses/payment-types`  
+**Endpoint:** `GET /expenses/payment-types`
 **Authentication:** Required
 
 **Responses:**
@@ -378,7 +378,7 @@ Retrieve a list of payment types.
 #### Get Categories
 Retrieve a list of all categories.
 
-**Endpoint:** `GET /categories`  
+**Endpoint:** `GET /categories`
 **Authentication:** Required
 
 **Responses:**
@@ -397,7 +397,7 @@ Retrieve a list of all categories.
 #### Upsert Ledger
 Create or update a ledger record.
 
-**Endpoint:** `POST /ledgers`  
+**Endpoint:** `POST /ledgers`
 **Authentication:** Required
 
 **Request Body:**
@@ -427,7 +427,7 @@ Create or update a ledger record.
 #### Upsert Budget
 Create or update a budget record.
 
-**Endpoint:** `POST /budgets`  
+**Endpoint:** `POST /budgets`
 **Authentication:** Required
 
 **Request Body:**
@@ -443,6 +443,108 @@ Create or update a budget record.
 
 **Responses:**
 - `201`: Created/updated budget
+- `400`: Validation error
+
+### Passive Income
+
+#### Get Passive Incomes
+Retrieve a list of passive income records based on filters.
+
+**Endpoint:** `GET /passive-income`
+**Authentication:** Required
+
+**Query Parameters:**
+- `userId`: Number (required)
+- `from`: String (format: YYYY-MM-DD, required)
+- `to`: String (format: YYYY-MM, required)
+- `keyword`: String (optional)
+
+**Responses:**
+- `200`: List of passive income records with metadata
+  ```json
+  {
+    "data": [
+      {
+        "id": "number",
+        "userId": "number",
+        "date": "string",
+        "title": "string",
+        "amount": "number",
+        "type": "string",
+        "createdAt": "datetime",
+        "updatedAt": "datetime",
+        "deletedAt": "datetime"
+      }
+    ],
+    "meta": {
+      "count": "number",
+      "total": "number"
+    }
+  }
+  ```
+- `400`: Validation error
+
+#### Create Passive Income
+Create a new passive income record.
+
+**Endpoint:** `POST /passive-income`
+**Authentication:** Required
+
+**Request Body:**
+```json
+{
+  "userId": "number",
+  "date": "string (format: YYYY-MM-DD)",
+  "title": "string",
+  "amount": "number",
+  "type": "string (optional)"
+}
+```
+
+**Responses:**
+- `201`: Created passive income record
+- `400`: Validation error
+
+#### Update Passive Income
+Update an existing passive income record.
+
+**Endpoint:** `PUT /passive-income/:id`
+**Authentication:** Required
+
+**Request Body:**
+```json
+{
+  "userId": "number",
+  "date": "string (format: YYYY-MM-DD)",
+  "title": "string",
+  "amount": "number",
+  "type": "string (optional)"
+}
+```
+
+**Responses:**
+- `201`: Updated passive income record
+- `400`: Validation error
+
+#### Get Passive Income by ID
+Retrieve a specific passive income record by ID.
+
+**Endpoint:** `GET /passive-income/:id`
+**Authentication:** Required
+
+**Responses:**
+- `200`: Passive income record details
+- `400`: Validation error
+- `404`: Passive income record not found
+
+#### Delete Passive Income
+Delete a passive income record by ID.
+
+**Endpoint:** `DELETE /passive-income/:id`
+**Authentication:** Required
+
+**Responses:**
+- `200`: Deleted passive income record
 - `400`: Validation error
 
 ## Data Models
@@ -517,6 +619,17 @@ Create or update a budget record.
 - `ledgerId`: Number (Foreign Key to Ledger)
 - `date`: String (YYYY-MM-DD)
 - `amount`: Number
+- `createdAt`: DateTime
+- `updatedAt`: DateTime (Optional)
+- `deletedAt`: DateTime (Optional)
+
+### PassiveIncome
+- `id`: Number (Primary Key)
+- `userId`: Number (Foreign Key to User)
+- `date`: String (YYYY-MM-DD)
+- `title`: String
+- `amount`: Number
+- `type`: String (Optional)
 - `createdAt`: DateTime
 - `updatedAt`: DateTime (Optional)
 - `deletedAt`: DateTime (Optional)

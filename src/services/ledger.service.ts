@@ -1,6 +1,7 @@
 import {Ledger, PrismaClient} from "@prisma/client";
 import {UpsertLedgerDto} from "../dtos/UpsertLedgerDto";
 import {findMonthlyExpenses} from "./expense.service";
+import {findMonthlyPassiveIncome} from "./passiveIncome.service";
 import dayjs from "dayjs";
 
 const prisma = new PrismaClient();
@@ -29,15 +30,11 @@ export const upsertLedger = async (data: UpsertLedgerDto): Promise<Ledger> => {
     ledger = await findLedger(data.userId, from);
   }
 
-  const { totalCash, totalBank } = await findMonthlyExpenses({
-    userId: data.userId,
-    from,
-    to
-  });
+  const { totalCash, totalBank } = await findMonthlyExpenses({ userId: data.userId, from, to});
+  const passiveIncome = await findMonthlyPassiveIncome({ userId: data.userId, from, to });
 
   const monthlyCost = data.budget + data.parentSupport + totalBank;
   const closingBalance = data.current + data.income - monthlyCost;
-  const passiveIncome = data.passiveIncome ? data.passiveIncome : 0;
   const incomePenny = data.incomePenny ? data.incomePenny : 0;
 
   const upsertData = {
@@ -75,7 +72,7 @@ export const upsertLedger = async (data: UpsertLedgerDto): Promise<Ledger> => {
 }
 
 /**
- * Update ledger whenever expenses are added, updated or deleted
+ * Update ledger whenever expenses or passive income are added, updated or deleted
  */
 export const updateLedger = async (userId: number, date: string): Promise<Ledger | null> => {
   const from = dayjs(date).startOf('month').format('YYYY-MM-DD');
@@ -93,7 +90,9 @@ export const updateLedger = async (userId: number, date: string): Promise<Ledger
   }
 
   const { totalCash, totalBank } = await findMonthlyExpenses({ userId, from, to });
+  const monthlyPassiveIncome = await findMonthlyPassiveIncome({ userId, from, to });
   const monthlyCost = ledger.budget + ledger.parentSupport + totalBank;
+  const balance = ledger.current + ledger.income - monthlyCost;
 
   return prisma.ledger.update({
     where: {
@@ -103,8 +102,10 @@ export const updateLedger = async (userId: number, date: string): Promise<Ledger
       expenseCash: totalCash,
       expenseBank: totalBank,
       cost: monthlyCost,
+      passiveIncome: monthlyPassiveIncome,
       netSaving: ledger.income - monthlyCost,
-      balance: ledger.current - monthlyCost
+      balance: balance,
+      nextOpening: balance + monthlyPassiveIncome
     }
   });
 }
