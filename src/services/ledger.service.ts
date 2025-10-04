@@ -36,6 +36,7 @@ export const upsertLedger = async (data: UpsertLedgerDto): Promise<Ledger> => {
   const monthlyCost = data.budget + data.parentSupport + totalBank;
   const closingBalance = data.current + data.income - monthlyCost;
   const incomePenny = data.incomePenny ? data.incomePenny : 0;
+  const netSaving = data.income - monthlyCost;
 
   const upsertData = {
     date: from,
@@ -49,7 +50,8 @@ export const upsertLedger = async (data: UpsertLedgerDto): Promise<Ledger> => {
     expenseBank: totalBank,
     cost: monthlyCost,
     passiveIncome,
-    netSaving: data.income - monthlyCost,
+    netSaving,
+    totalSaving: netSaving + passiveIncome,
     balance: closingBalance,
     nextOpening: closingBalance + passiveIncome,
     exchangeRate: data.exchangeRate || null,

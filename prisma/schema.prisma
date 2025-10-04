@@ -83,6 +83,7 @@ model Ledger {
   cost          Int       @default(0) // budget + parentSupport + expenseBank
   passiveIncome Int       @default(0) @map("passive_income") // additional income
   netSaving     Int       @default(0) @map("net_saving") // income - cost
+  totalSaving   Int       @default(0) @map("total_saving") // net_saving + passivIncome
   balance       Int       @default(0) // closing balance = current - cost
   nextOpening   Int       @default(0) @map("next_opening") // closing balance + passiveIncome
   exchangeRate  Float?    @map("exchange_rate")
