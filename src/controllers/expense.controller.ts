@@ -159,6 +159,7 @@ class ExpenseController {
       [PAY_TYPE.KPAY]: 'KBZ Pay',
       [PAY_TYPE.KBZ_BANK]: 'KBZ Banking',
       [PAY_TYPE.WAVE]: 'WavePay',
+      [PAY_TYPE.YOMA_BANK]: 'Yoma Bank',
     }
 
     return res.status(200).json(types);

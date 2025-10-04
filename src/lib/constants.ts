@@ -12,6 +12,7 @@ export enum PAY_TYPE {
   KPAY      = 'kpay',
   KBZ_BANK  = 'kbz_bank',
   WAVE      = 'wave_pay',
+  YOMA_BANK = 'yoma_bank',
 }
 
 export enum PAY_TYPE_GROUP {
