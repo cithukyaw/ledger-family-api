@@ -14,6 +14,7 @@ import bodyParser from 'body-parser';
 import passport, {authMiddleware} from "./lib/passport";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { apiMcpMiddleware } from './lib/apiMcpMiddleware';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -61,7 +62,7 @@ app.use('/api/categories', authMiddleware, categoryRouter);
 app.use('/api/ledgers', authMiddleware, ledgerRouter);
 app.use('/api/budgets', authMiddleware, budgetRouter);
 app.use('/api/passive-incomes', authMiddleware, passiveIncomeRouter);
-app.use('/api/mcp', mcpRouter);
+app.use('/api/mcp', apiMcpMiddleware, mcpRouter);
 
 // Start the server
 app.listen(PORT, () => {

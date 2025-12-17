@@ -20,6 +20,14 @@ class MCPController {
     res: Response
   ) {
     try {
+      const userId = req.user as number | undefined;
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          message: "Unauthorized: missing user",
+        });
+      }
+
       const body = req.body;
 
       if (!Array.isArray(body)) {
@@ -77,7 +85,7 @@ class MCPController {
           }
 
           expenseData.push({
-            userId: 2, // TODO: make dynamic later
+            userId,
             categoryId,
             type: type || null,
             date,
@@ -101,7 +109,7 @@ class MCPController {
 
       // Update ledgers for affected dates
       for (const d of ledgerDates) {
-        await updateLedger(2, d);
+        await updateLedger(userId, d);
       }
 
       return res.status(201).json({

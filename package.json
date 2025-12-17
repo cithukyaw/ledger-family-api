@@ -7,6 +7,7 @@
     "build": "tsc --build",
     "migrate": "prisma migrate deploy && prisma generate",
     "seed": "prisma db seed",
+    "mcp:key": "ts-node scripts/generateMcpApiKey.ts",
     "dev": "cross-env NODE_ENV=development nodemon ./src/index.ts",
     "prod": "cross-env NODE_ENV=production node ./build/index.js",
     "start": "npm run build && npm run migrate && npm run seed && npm run prod",

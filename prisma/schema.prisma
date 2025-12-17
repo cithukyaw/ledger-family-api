@@ -14,6 +14,7 @@ model User {
   email         String          @unique(map: "User_email_key") @db.VarChar(100)
   role          String          @db.VarChar(10)
   active        Boolean         @default(true)
+  mcpApiKey     String?         @unique @db.VarChar(255) @map("mcp_api_key")
   createdAt     DateTime        @default(now()) @map("created_at")
   updatedAt     DateTime?       @updatedAt @map("updated_at")
   deletedAt     DateTime?       @map("deleted_at")
