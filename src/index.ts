@@ -9,6 +9,7 @@ import categoryRouter from "./routes/categories";
 import ledgerRouter from "./routes/ledger";
 import budgetRouter from "./routes/budget";
 import passiveIncomeRouter from "./routes/passiveIncome";
+import mcpRouter from "./routes/mcp";
 import bodyParser from 'body-parser';
 import passport, {authMiddleware} from "./lib/passport";
 import cors from "cors";
@@ -60,6 +61,7 @@ app.use('/api/categories', authMiddleware, categoryRouter);
 app.use('/api/ledgers', authMiddleware, ledgerRouter);
 app.use('/api/budgets', authMiddleware, budgetRouter);
 app.use('/api/passive-incomes', authMiddleware, passiveIncomeRouter);
+app.use('/api/mcp', mcpRouter);
 
 // Start the server
 app.listen(PORT, () => {
