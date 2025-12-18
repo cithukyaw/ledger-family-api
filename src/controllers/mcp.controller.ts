@@ -75,7 +75,7 @@ class MCPController {
             continue;
           }
 
-          let categoryId: number | null = null;
+          let categoryId: number = 1; // General category by default
           if (categoryName) {
             const lowerName = String(categoryName).toLowerCase();
             const catId = categoryMap.get(lowerName);
