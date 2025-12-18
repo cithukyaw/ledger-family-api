@@ -13,6 +13,8 @@ Most endpoints require authentication using JWT tokens. Tokens can be provided e
 1. As a Bearer token in the Authorization header
 2. As an HTTP-only cookie (if `JWT_COOKIE_NAME` is configured)
 
+**MCP Endpoints** use API key authentication instead of JWT. The API key must be provided as a Bearer token in the Authorization header. The API key is stored in the user's `mcp_api_key` field and can be generated using the `npm run mcp:key` script.
+
 ## Error Responses
 All error responses follow this format:
 ```json
@@ -547,6 +549,74 @@ Delete a passive income record by ID.
 - `200`: Deleted passive income record
 - `400`: Validation error
 
+### MCP (Model Context Protocol)
+
+#### Receive Expense Data
+Receive expense data from an MCP server and bulk insert into the expenses table.
+
+**Endpoint:** `POST /mcp/expense`
+**Authentication:** Required (MCP API Key as Bearer token)
+
+**Request Headers:**
+```
+Authorization: Bearer <mcp_api_key>
+Content-Type: application/json
+```
+
+**Request Body:**
+An array of objects, each containing:
+- `date`: String (format: YYYY-MM-DD, optional) - If not provided, uses current date
+- `dataRows`: Array of arrays, where each inner array represents an expense row with:
+  - Index 0: `title` (String, required)
+  - Index 1: `amount` (String/Number, required) - Will be converted to number
+  - Index 2: `categoryName` (String, optional) - Category name (case-insensitive lookup)
+  - Index 3: `type` (String, optional) - Payment type
+  - Index 4: `remarks` (String, optional) - Remarks/notes
+
+**Example Request:**
+```json
+[
+  {
+    "date": "2025-12-12",
+    "dataRows": [
+      ["Lunch", "5000", "Eat Out", "cash", "Restaurant meal"],
+      ["Groceries", "15000", "Shopping", "aya_bank", "Weekly shopping"]
+    ]
+  },
+  {
+    "date": "2025-12-13",
+    "dataRows": [
+      ["Transport", "2000", "Transportation", "cash"]
+    ]
+  },
+  {
+    "dataRows": [
+      ["Snacks", "1000", "Food & Snacks", "kpay"]
+    ]
+  }
+]
+```
+
+**Responses:**
+- `201`: Expenses created successfully
+  ```json
+  {
+    "success": true,
+    "message": "Expenses created successfully",
+    "count": 4
+  }
+  ```
+- `400`: Validation error (e.g., invalid request body, no valid expense rows)
+- `401`: Unauthorized (missing or invalid API key)
+- `500`: Internal server error
+
+**Notes:**
+- The user ID is automatically determined from the MCP API key
+- Category names are matched case-insensitively
+- If a category name is not found, `categoryId` will be set to `null`
+- Ledgers are automatically updated for all affected dates after expenses are created
+- Rows with missing required fields (title or amount) or invalid amounts are skipped
+
 ## Data Models
 
 ### User
@@ -556,6 +626,7 @@ Delete a passive income record by ID.
 - `password`: String (Hashed)
 - `role`: String (admin/member)
 - `active`: Boolean
+- `mcpApiKey`: String (Optional, Unique) - API key for MCP server authentication
 - `createdAt`: DateTime
 - `updatedAt`: DateTime (Optional)
 - `deletedAt`: DateTime (Optional)

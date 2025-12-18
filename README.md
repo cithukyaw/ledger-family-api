@@ -14,19 +14,38 @@ API documentation is available at [API_DOC.md](API_DOC.md).
 
 ## Setup
 
-    npm install
-    npm run migrate
-    npm run seed
+```sh
+npm install
+npm run migrate
+npm run seed
+```
 
 ## Development
 
-    npm run dev
+```sh
+npm run dev
+```
 
 ## Production
 
-    npm start
+```sh
+npm start
+````
+or
+```sh
+npm run build
+npm run prod
+```
 
-or 
+## API for Model Context Protocol (MCP) server
 
-    npm run build
-    npm run prod
+API for MCP server is available to register expenses in batch.
+
+- API: [See documentation](API_DOC.md#mcp-model-context-protocol)
+- MCP Server: https://github.com/cithukyaw/mcp-csv-forwarder
+
+### Generate API key for MCP server
+
+```sh
+npm run mcp:key -- <user@example.com>
+```
