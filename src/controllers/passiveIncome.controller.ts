@@ -19,7 +19,7 @@ import {
 import {FilterPassiveIncomeDto} from "../dtos/FilterPassiveIncome.dto";
 import {ParamIdToNumber, QueryStrToNumber} from "../lib/decorators";
 import {PassiveIncome} from "@prisma/client";
-import {updateLedger} from "../services/ledger.service";
+import {syncLedger} from "../services/ledger.service";
 import dayjs from "dayjs";
 
 class PassiveIncomeController {
@@ -63,7 +63,7 @@ class PassiveIncomeController {
 
     const createdPassiveIncome: PassiveIncome = await createPassiveIncome(data);
     if (createdPassiveIncome) {
-      await updateLedger(data.userId, data.date);
+      await syncLedger(data.userId, data.date);
     }
 
     return res.status(201).send(createdPassiveIncome);
@@ -85,7 +85,7 @@ class PassiveIncomeController {
 
     const updatedPassiveIncome: PassiveIncome = await updatePassiveIncome(id, data);
     if (updatedPassiveIncome) {
-      await updateLedger(data.userId, data.date);
+      await syncLedger(data.userId, data.date);
     }
 
     return res.status(201).send(updatedPassiveIncome);
@@ -106,7 +106,7 @@ class PassiveIncomeController {
     try {
       const deleted = await deletePassiveIncome(id);
 
-      await updateLedger(deleted.userId, dayjs(deleted.date).format('YYYY-MM-DD'));
+      await syncLedger(deleted.userId, dayjs(deleted.date).format('YYYY-MM-DD'));
 
       return res.status(200).json(deleted);
     } catch (err) {

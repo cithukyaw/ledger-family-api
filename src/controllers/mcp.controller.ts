@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { PrismaClient, Prisma } from "@prisma/client";
 import dayjs from "dayjs";
-import { updateLedger } from "../services/ledger.service";
+import { syncLedger } from "../services/ledger.service";
 
 interface MCPDataItem {
   date?: string;
@@ -109,7 +109,7 @@ class MCPController {
 
       // Update ledgers for affected dates
       for (const d of ledgerDates) {
-        await updateLedger(userId, d);
+        await syncLedger(userId, d);
       }
 
       return res.status(201).json({

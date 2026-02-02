@@ -21,7 +21,7 @@ import {PAY_TYPE, PAY_TYPE_GROUP} from "../lib/constants";
 import {FilterExpenseDto} from "../dtos/FilterExpense.dto";
 import {ParamIdToNumber, QueryStrToNumArray, QueryStrToNumber} from "../lib/decorators";
 import {Expense} from "@prisma/client";
-import {updateLedger} from "../services/ledger.service";
+import {syncLedger} from "../services/ledger.service";
 import dayjs from "dayjs";
 
 class ExpenseController {
@@ -86,7 +86,7 @@ class ExpenseController {
 
     const createdExpense: Expense = await createExpense(data);
     if (createdExpense) {
-      await updateLedger(data.userId, data.date);
+      await syncLedger(data.userId, data.date);
     }
 
     return res.status(201).send(createdExpense);
@@ -108,7 +108,7 @@ class ExpenseController {
 
     const updatedExpense: Expense = await updateExpense(id, data);
     if (updatedExpense) {
-      await updateLedger(data.userId, data.date);
+      await syncLedger(data.userId, data.date);
     }
 
     return res.status(201).send(updatedExpense);
@@ -129,7 +129,7 @@ class ExpenseController {
     try {
       const deleted = await deleteExpense(id);
 
-      await updateLedger(deleted.userId, dayjs(deleted.date).format('YYYY-MM-DD'));
+      await syncLedger(deleted.userId, dayjs(deleted.date).format('YYYY-MM-DD'));
 
       return res.status(200).json(deleted);
     } catch (err) {

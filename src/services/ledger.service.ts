@@ -75,9 +75,9 @@ export const upsertLedger = async (data: UpsertLedgerDto): Promise<Ledger> => {
 }
 
 /**
- * Update ledger whenever expenses or passive income are added, updated or deleted
+ * Update ledger whenever ledger or expenses or passive income are added, updated or deleted
  */
-export const updateLedger = async (userId: number, date: string): Promise<Ledger | null> => {
+export const syncLedger = async (userId: number, date: string): Promise<Ledger | null> => {
   const from = dayjs(date).startOf('month').format('YYYY-MM-DD');
   const to = dayjs(date).endOf('month').format('YYYY-MM-DD');
 
