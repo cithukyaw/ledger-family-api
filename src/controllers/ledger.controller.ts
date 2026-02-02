@@ -2,7 +2,7 @@ import {Request, Response} from "express";
 import {CreateLedgerResponse} from "../types/declarations";
 import {apiValidationError} from "../lib/api";
 import {Ledger} from "@prisma/client";
-import {upsertLedger} from "../services/ledger.service";
+import {syncLedger, upsertLedger} from "../services/ledger.service";
 import {UpsertLedgerDto} from "../dtos/UpsertLedgerDto";
 import {ledgerUpsertSchema} from "../validations/ledger.validation";
 
@@ -24,6 +24,10 @@ class LedgerController {
     data.userId = req.user as number;
 
     const createdLedger: Ledger = await upsertLedger(data);
+
+    if (createdLedger) {
+      await syncLedger(data.userId, data.date);
+    }
 
     return res.status(201).send(createdLedger);
   }
