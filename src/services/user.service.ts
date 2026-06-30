@@ -31,13 +31,17 @@ export const findUsers = () => {
 export const getUserById = async (id: number) => {
   return prisma.user.findUnique({
     select: publicUserFields,
-    where: { id }
+    where: {
+      id,
+      deletedAt: null
+    }
   });
 }
 
 export const getUserByEmail = (email: string, except?: number) => {
   return prisma.user.findFirst({
     where: {
+      deletedAt: null,
       email,
       id: {
         not: except ? except : 0
@@ -67,7 +71,10 @@ export const updateUser = async (id: number, user: UpdateUserDto) => {
   }
 
   return prisma.user.update({
-    where: { id },
+    where: {
+      id,
+      deletedAt: null
+    },
     data: {
       ...user,
     }

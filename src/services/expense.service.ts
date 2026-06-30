@@ -12,6 +12,7 @@ const getExpenseWhere = (filter: FilterExpenseDto): Prisma.ExpenseWhereInput => 
       gte: filter.from,
       lte: filter.to,
     },
+    deletedAt: null,
   };
 
   if (filter.category && filter.category.length > 0) {
@@ -52,7 +53,10 @@ export const createExpense = async (expense: CreateExpenseDtoWithUserId): Promis
 
 export const updateExpense = async (id: number, expense: CreateExpenseDtoWithUserId): Promise<Expense> => {
   return prisma.expense.update({
-    where: { id },
+    where: {
+      id,
+      deletedAt: null
+    },
     data: {
       userId: expense.userId,
       categoryId: expense.category || null,
@@ -82,7 +86,8 @@ export const getExpenseById = async (id: number, userId: number) => {
   return prisma.expense.findUnique({
     where: {
       id,
-      userId
+      userId,
+      deletedAt: null
     }
   });
 }

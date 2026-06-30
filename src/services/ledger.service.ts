@@ -11,6 +11,7 @@ export const findLedger = async (userId: number, date: string): Promise<Ledger |
     where: {
       userId: userId,
       date,
+      deletedAt: null
     }
   });
 }
@@ -23,7 +24,10 @@ export const upsertLedger = async (data: UpsertLedgerDto): Promise<Ledger> => {
   if (data.id) {
     // find ledger by id
     ledger = await prisma.ledger.findUnique({
-      where: { id: data.id }
+      where: {
+        id: data.id,
+        deletedAt: null
+      }
     })
   } else {
     // find ledger by userId and date
@@ -63,7 +67,8 @@ export const upsertLedger = async (data: UpsertLedgerDto): Promise<Ledger> => {
   if (ledger) {
     return prisma.ledger.update({
       where: {
-        id: ledger.id
+        id: ledger.id,
+        deletedAt: null
       },
       data: upsertData
     });
@@ -99,7 +104,8 @@ export const syncLedger = async (userId: number, date: string): Promise<Ledger |
 
   return prisma.ledger.update({
     where: {
-      id: ledger.id
+      id: ledger.id,
+      deletedAt: null
     },
     data: {
       expenseCash: totalCash,

@@ -11,6 +11,7 @@ const getPassiveIncomeWhere = (filter: FilterPassiveIncomeDto): Prisma.PassiveIn
       gte: filter.from,
       lte: filter.to,
     },
+    deletedAt: null
   };
 
   if (filter.keyword) {
@@ -38,7 +39,10 @@ export const createPassiveIncome = async (passiveIncome: CreatePassiveIncomeDtoW
 
 export const updatePassiveIncome = async (id: number, passiveIncome: CreatePassiveIncomeDtoWithUserId): Promise<PassiveIncome> => {
   return prisma.passiveIncome.update({
-    where: { id },
+    where: {
+      id,
+      deletedAt: null
+    },
     data: {
       userId: passiveIncome.userId,
       date: passiveIncome.date,
@@ -63,7 +67,8 @@ export const getPassiveIncomeById = async (id: number, userId: number) => {
   return prisma.passiveIncome.findUnique({
     where: {
       id,
-      userId
+      userId,
+      deletedAt: null
     }
   });
 }

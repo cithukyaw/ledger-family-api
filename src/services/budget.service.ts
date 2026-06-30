@@ -9,6 +9,7 @@ export const findBudget = async (ledgerId: number, date: string): Promise<Budget
     where: {
       ledgerId,
       date,
+      deletedAt: null
     }
   });
 }
@@ -20,7 +21,10 @@ export const upsertBudget = async (data: UpsertBudgetDto) => {
   if (data.id) {
     // find budget by id
     budget = await prisma.budget.findUnique({
-      where: { id: data.id }
+      where: {
+        id: data.id,
+        deletedAt: null
+      }
     })
   } else {
     // find budget by ledgerId and date

@@ -10,6 +10,9 @@ const publicCategoryFields: CategoryFields = {
 
 export const findCategories = () => {
   return prisma.category.findMany({
+    where: {
+      deletedAt: null
+    },
     select: publicCategoryFields,
     orderBy: [{
       name: 'asc'

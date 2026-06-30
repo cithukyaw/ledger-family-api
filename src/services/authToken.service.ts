@@ -21,7 +21,8 @@ export const saveAuthToken = async (userId: number, tokens: UserTokens) => {
 export const findUserByRefreshToken = async (token: string): Promise<User> => {
   const authToken = await prisma.authToken.findFirstOrThrow({
     where: {
-      refreshToken: token
+      refreshToken: token,
+      deletedAt: null
     },
     include: {
       user: true
