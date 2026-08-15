@@ -1,10 +1,9 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../src/lib/prisma.js";
 import crypto from "crypto";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const prisma = new PrismaClient();
 
 async function main() {
   const email = process.argv[2];

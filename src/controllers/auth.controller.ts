@@ -1,25 +1,25 @@
 import {Request, Response} from 'express';
-import {deleteTokenCookie, generateTokens, saveTokenInCookie} from "../lib/jwt";
+import {deleteTokenCookie, generateTokens, saveTokenInCookie} from "../lib/jwt.js";
 import bcrypt from "bcryptjs";
-import {createUser, exposeUser, getUserByEmail} from "../services/user.service";
-import {CreateUserDto, SingleUserDto} from "../dtos/User.dto";
+import {createUser, exposeUser, getUserByEmail} from "../services/user.service.js";
+import {CreateUserDto, SingleUserDto} from "../dtos/User.dto.js";
 import {
   emailSchema,
   refreshTokenSchema,
   singleUserSchema,
   userCreateSchema,
   userLoginSchema
-} from "../validations/user.validation";
+} from "../validations/user.validation.js";
 import {
   CreateUserResponse,
   LoginUserResponse,
   PreCheckLoginResponse,
   RefreshTokenResponse,
   SingleUserResponse
-} from "../types/declarations";
-import {Prisma} from '@prisma/client';
-import {apiValidationError} from "../lib/api";
-import {findUserByRefreshToken, saveAuthToken} from "../services/authToken.service";
+} from "../types/declarations.js";
+import {Prisma} from '../generated/prisma/client.js';
+import {apiValidationError} from "../lib/api.js";
+import {findUserByRefreshToken, saveAuthToken} from "../services/authToken.service.js";
 
 class AuthController {
   /**

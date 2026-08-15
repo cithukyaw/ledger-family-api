@@ -1,8 +1,7 @@
-import { Budget, Ledger, PrismaClient } from "@prisma/client";
+import { Budget, Ledger } from "../src/generated/prisma/client.js";
+import { prisma } from "../src/lib/prisma.js";
 import {genSaltSync, hashSync} from "bcryptjs";
-import {ROLE} from "../src/lib/constants";
-
-const prisma = new PrismaClient();
+import {ROLE} from "../src/lib/constants.js";
 
 const users = async () => {
   const salt = genSaltSync(10)

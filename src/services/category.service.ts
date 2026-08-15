@@ -1,7 +1,6 @@
-import {PrismaClient} from "@prisma/client";
-import {CategoryFields} from "../types/declarations";
+import {prisma} from "../lib/prisma.js";
+import {CategoryFields} from "../types/declarations.js";
 
-const prisma = new PrismaClient();
 
 const publicCategoryFields: CategoryFields = {
   id: true,

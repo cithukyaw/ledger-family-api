@@ -1,7 +1,7 @@
-import {PrismaClient, User} from "@prisma/client";
-import {UserTokens} from "../types/declarations";
+import {User} from "../generated/prisma/client.js";
+import {prisma} from "../lib/prisma.js";
+import {UserTokens} from "../types/declarations.js";
 
-const prisma = new PrismaClient();
 
 export const saveAuthToken = async (userId: number, tokens: UserTokens) => {
   await prisma.authToken.deleteMany({

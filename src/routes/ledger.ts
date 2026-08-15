@@ -1,5 +1,5 @@
 import {Router} from "express";
-import LedgerController from "../controllers/ledger.controller";
+import LedgerController from "../controllers/ledger.controller.js";
 
 const router = Router();
 

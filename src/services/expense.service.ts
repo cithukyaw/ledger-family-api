@@ -1,9 +1,9 @@
-import {Expense, Prisma, PrismaClient} from "@prisma/client";
-import {CreateExpenseDtoWithUserId} from "../dtos/CreateExpense.dto";
-import {PAY_TYPE, PAY_TYPE_GROUP} from "../lib/constants";
-import {FilterExpenseDto, FilterMonthlyExpensesDto, FilterPaymentTypeDto} from "../dtos/FilterExpense.dto";
+import {Expense, Prisma} from "../generated/prisma/client.js";
+import {prisma} from "../lib/prisma.js";
+import {CreateExpenseDtoWithUserId} from "../dtos/CreateExpense.dto.js";
+import {PAY_TYPE, PAY_TYPE_GROUP} from "../lib/constants.js";
+import {FilterExpenseDto, FilterMonthlyExpensesDto, FilterPaymentTypeDto} from "../dtos/FilterExpense.dto.js";
 
-const prisma = new PrismaClient();
 
 const getExpenseWhere = (filter: FilterExpenseDto): Prisma.ExpenseWhereInput => {
   let condition: Prisma.ExpenseWhereInput = {

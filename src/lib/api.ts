@@ -1,5 +1,5 @@
 import {Response} from 'express';
-import {ApiError} from "../types/declarations";
+import {ApiError} from "../types/declarations.js";
 import {ZodError} from "zod";
 
 export const apiValidationError = (

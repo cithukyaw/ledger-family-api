@@ -1,5 +1,5 @@
 import {Router} from "express";
-import PassiveIncomeController from "../controllers/passiveIncome.controller";
+import PassiveIncomeController from "../controllers/passiveIncome.controller.js";
 
 const router = Router();
 

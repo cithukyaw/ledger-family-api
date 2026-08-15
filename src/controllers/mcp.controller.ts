@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
-import { PrismaClient, Prisma } from "@prisma/client";
+import { Prisma } from "../generated/prisma/client.js";
+import { prisma } from "../lib/prisma.js";
 import dayjs from "dayjs";
-import { syncLedger } from "../services/ledger.service";
+import { syncLedger } from "../services/ledger.service.js";
 
 interface MCPDataItem {
   date?: string;
   dataRows: string[][];
 }
 
-const prisma = new PrismaClient();
 
 class MCPController {
   /**

@@ -1,13 +1,13 @@
 import {Request, Response} from 'express';
-import {exposeUser, findUsers, getUserByEmail, getUserById, updateUser} from "../services/user.service";
-import {singleUserSchema, userLedgerQuerySchema, userUpdateSchema} from "../validations/user.validation";
-import {SingleLedgerResponse, SingleUserResponse, UsersResponse} from "../types/declarations";
-import {ParamIdToNumber} from "../lib/decorators";
-import {apiValidationError} from "../lib/api";
-import {findLedger} from "../services/ledger.service";
+import {exposeUser, findUsers, getUserByEmail, getUserById, updateUser} from "../services/user.service.js";
+import {singleUserSchema, userLedgerQuerySchema, userUpdateSchema} from "../validations/user.validation.js";
+import {SingleLedgerResponse, SingleUserResponse, UsersResponse} from "../types/declarations.js";
+import {ParamIdToNumber} from "../lib/decorators.js";
+import {apiValidationError} from "../lib/api.js";
+import {findLedger} from "../services/ledger.service.js";
 import dayjs from "dayjs";
-import {FilterLedgerParamDto, FilterLedgerQueryDto} from "../dtos/FilterLedgerDto";
-import {SingleUserDto, UpdateUserDto} from "../dtos/User.dto";
+import {FilterLedgerParamDto, FilterLedgerQueryDto} from "../dtos/FilterLedgerDto.js";
+import {SingleUserDto, UpdateUserDto} from "../dtos/User.dto.js";
 
 class UserController {
   /**

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import {PAY_TYPE} from "../lib/constants";
+import {PAY_TYPE} from "../lib/constants.js";
 
 export const expenseCreateSchema = z.object({
   userId: z.number(),

@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
-import {findCategories} from "../services/category.service";
-import {CategoriesResponse} from "../types/declarations";
+import {findCategories} from "../services/category.service.js";
+import {CategoriesResponse} from "../types/declarations.js";
 
 class CategoryController {
   /**

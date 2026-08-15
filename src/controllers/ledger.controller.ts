@@ -1,10 +1,10 @@
 import {Request, Response} from "express";
-import {CreateLedgerResponse} from "../types/declarations";
-import {apiValidationError} from "../lib/api";
-import {Ledger} from "@prisma/client";
-import {syncLedger, upsertLedger} from "../services/ledger.service";
-import {UpsertLedgerDto} from "../dtos/UpsertLedgerDto";
-import {ledgerUpsertSchema} from "../validations/ledger.validation";
+import {CreateLedgerResponse} from "../types/declarations.js";
+import {apiValidationError} from "../lib/api.js";
+import {Ledger} from "../generated/prisma/client.js";
+import {syncLedger, upsertLedger} from "../services/ledger.service.js";
+import {UpsertLedgerDto} from "../dtos/UpsertLedgerDto.js";
+import {ledgerUpsertSchema} from "../validations/ledger.validation.js";
 
 class LedgerController {
   /**

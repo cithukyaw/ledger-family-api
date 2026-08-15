@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import {expenseFilterSchema} from "../validations/expense.validation";
-import {PAY_TYPE_GROUP} from "../lib/constants";
+import {expenseFilterSchema} from "../validations/expense.validation.js";
+import {PAY_TYPE_GROUP} from "../lib/constants.js";
 
 export type FilterExpenseDto = z.infer<typeof expenseFilterSchema>
 

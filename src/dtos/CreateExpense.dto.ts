@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import {expenseCreateSchema} from "../validations/expense.validation";
+import {expenseCreateSchema} from "../validations/expense.validation.js";
 
 // Infer the base type from the schema
 export type CreateExpenseDto = z.infer<typeof expenseCreateSchema>

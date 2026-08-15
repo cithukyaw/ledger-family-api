@@ -1,6 +1,6 @@
 import {Router} from "express";
-import AuthController from "../controllers/auth.controller";
-import {authMiddleware} from "../lib/passport";
+import AuthController from "../controllers/auth.controller.js";
+import {authMiddleware} from "../lib/passport.js";
 
 const router = Router();
 

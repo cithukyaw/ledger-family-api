@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import {passiveIncomeCreateSchema} from "../validations/passiveIncome.validation";
+import {passiveIncomeCreateSchema} from "../validations/passiveIncome.validation.js";
 
 // Infer the base type from the schema
 export type CreatePassiveIncomeDto = z.infer<typeof passiveIncomeCreateSchema>

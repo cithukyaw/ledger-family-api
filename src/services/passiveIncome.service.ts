@@ -1,8 +1,8 @@
-import {PassiveIncome, Prisma, PrismaClient} from "@prisma/client";
-import {CreatePassiveIncomeDtoWithUserId} from "../dtos/CreatePassiveIncome.dto";
-import {FilterMonthlyPassiveIncomeDto, FilterPassiveIncomeDto} from "../dtos/FilterPassiveIncome.dto";
+import {PassiveIncome, Prisma} from "../generated/prisma/client.js";
+import {prisma} from "../lib/prisma.js";
+import {CreatePassiveIncomeDtoWithUserId} from "../dtos/CreatePassiveIncome.dto.js";
+import {FilterMonthlyPassiveIncomeDto, FilterPassiveIncomeDto} from "../dtos/FilterPassiveIncome.dto.js";
 
-const prisma = new PrismaClient();
 
 const getPassiveIncomeWhere = (filter: FilterPassiveIncomeDto): Prisma.PassiveIncomeWhereInput => {
   let condition: Prisma.PassiveIncomeWhereInput = {

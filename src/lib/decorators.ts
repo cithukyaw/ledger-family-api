@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from 'express';
-import {apiValidationError} from "./api";
+import {apiValidationError} from "./api.js";
 
 /**
  * Change a type of id field in URL parameters from string to number

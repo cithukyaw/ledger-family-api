@@ -1,8 +1,8 @@
-import {Budget, PrismaClient} from "@prisma/client";
-import {UpsertBudgetDto} from "../dtos/UpsertBudgetDto";
+import {Budget} from "../generated/prisma/client.js";
+import {prisma} from "../lib/prisma.js";
+import {UpsertBudgetDto} from "../dtos/UpsertBudgetDto.js";
 import dayjs from "dayjs";
 
-const prisma = new PrismaClient();
 
 export const findBudget = async (ledgerId: number, date: string): Promise<Budget | null> => {
   return prisma.budget.findFirst({

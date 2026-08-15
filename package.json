@@ -5,23 +5,22 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc --build",
+    "prebuild": "prisma generate",
     "migrate": "prisma migrate deploy && prisma generate",
     "seed": "prisma db seed",
-    "mcp:key": "ts-node scripts/generateMcpApiKey.ts",
-    "dev": "cross-env NODE_ENV=development nodemon ./src/index.ts",
+    "mcp:key": "tsx scripts/generateMcpApiKey.ts",
+    "dev": "cross-env NODE_ENV=development tsx watch ./src/index.ts",
     "prod": "cross-env NODE_ENV=production node ./build/index.js",
     "start": "npm run build && npm run migrate && npm run seed && npm run prod",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "ts-node copy-env.ts"
-  },
-  "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "postinstall": "tsx copy-env.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^6.19.3",
-    "bcryptjs": "^2.4.3",
+    "@prisma/adapter-pg": "^7.6.0",
+    "@prisma/client": "^7.6.0",
+    "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dayjs": "^1.11.13",
@@ -30,10 +29,10 @@
     "jsonwebtoken": "^9.0.2",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
+    "pg": "^8.13.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
     "@types/dotenv": "^6.1.1",
@@ -41,13 +40,14 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^22.0.0",
     "@types/passport-jwt": "^4.0.1",
+    "@types/pg": "^8.11.10",
     "cross-env": "^7.0.3",
-    "nodemon": "^3.1.4",
-    "prisma": "^6.19.3",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
+    "prisma": "^7.6.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.0"
   },
   "engines": {
-    "node": ">=20.9.0"
-  }
+    "node": ">=20.19.0"
+  },
+  "type": "module"
 }

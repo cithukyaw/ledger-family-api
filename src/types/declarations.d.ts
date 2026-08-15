@@ -1,5 +1,5 @@
-import {Budget, Expense, Ledger, PassiveIncome} from "@prisma/client";
-import {PAY_TYPE} from "../lib/constants";
+import {Budget, Expense, Ledger, PassiveIncome} from "../generated/prisma/client.js";
+import {PAY_TYPE} from "../lib/constants.js";
 
 interface ApiError {
   field: string;

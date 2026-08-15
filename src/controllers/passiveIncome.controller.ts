@@ -1,13 +1,13 @@
 import {Request, Response} from "express";
-import {passiveIncomeCreateSchema, passiveIncomeFilterSchema, singlePassiveIncomeSchema} from "../validations/passiveIncome.validation";
-import {apiValidationError} from "../lib/api";
-import {CreatePassiveIncomeDto, CreatePassiveIncomeDtoWithUserId} from "../dtos/CreatePassiveIncome.dto";
+import {passiveIncomeCreateSchema, passiveIncomeFilterSchema, singlePassiveIncomeSchema} from "../validations/passiveIncome.validation.js";
+import {apiValidationError} from "../lib/api.js";
+import {CreatePassiveIncomeDto, CreatePassiveIncomeDtoWithUserId} from "../dtos/CreatePassiveIncome.dto.js";
 import {
   CreatePassiveIncomeResponse,
   DeletePassiveIncomeResponse,
   PassiveIncomesResponse,
   SinglePassiveIncomeResponse,
-} from "../types/declarations";
+} from "../types/declarations.js";
 import {
   createPassiveIncome,
   deletePassiveIncome,
@@ -15,11 +15,11 @@ import {
   findTotalPassiveIncome,
   getPassiveIncomeById,
   updatePassiveIncome
-} from "../services/passiveIncome.service";
-import {FilterPassiveIncomeDto} from "../dtos/FilterPassiveIncome.dto";
-import {ParamIdToNumber, QueryStrToNumber} from "../lib/decorators";
-import {PassiveIncome} from "@prisma/client";
-import {syncLedger} from "../services/ledger.service";
+} from "../services/passiveIncome.service.js";
+import {FilterPassiveIncomeDto} from "../dtos/FilterPassiveIncome.dto.js";
+import {ParamIdToNumber, QueryStrToNumber} from "../lib/decorators.js";
+import {PassiveIncome} from "../generated/prisma/client.js";
+import {syncLedger} from "../services/ledger.service.js";
 import dayjs from "dayjs";
 
 class PassiveIncomeController {

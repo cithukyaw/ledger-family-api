@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import {ExtractJwt, Strategy as JwtStrategy} from "passport-jwt";
 import passport from "passport";
-import {getUserById} from "../services/user.service";
+import {getUserById} from "../services/user.service.js";
 
 // Custom cookie extractor function
 const jwtCookieExtractor = (req: Request) => {

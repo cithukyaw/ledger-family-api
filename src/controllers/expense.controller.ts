@@ -1,14 +1,14 @@
 import {Request, Response} from "express";
-import {expenseCreateSchema, expenseFilterSchema, singleExpenseSchema} from "../validations/expense.validation";
-import {apiValidationError} from "../lib/api";
-import {CreateExpenseDto, CreateExpenseDtoWithUserId} from "../dtos/CreateExpense.dto";
+import {expenseCreateSchema, expenseFilterSchema, singleExpenseSchema} from "../validations/expense.validation.js";
+import {apiValidationError} from "../lib/api.js";
+import {CreateExpenseDto, CreateExpenseDtoWithUserId} from "../dtos/CreateExpense.dto.js";
 import {
   CreateExpenseResponse,
   DeleteExpenseResponse,
   ExpensesResponse,
   PaymentTypesResponse,
   SingleExpenseResponse,
-} from "../types/declarations";
+} from "../types/declarations.js";
 import {
   createExpense,
   deleteExpense,
@@ -16,12 +16,12 @@ import {
   findTotalByPaymentType,
   getExpenseById,
   updateExpense
-} from "../services/expense.service";
-import {PAY_TYPE, PAY_TYPE_GROUP} from "../lib/constants";
-import {FilterExpenseDto} from "../dtos/FilterExpense.dto";
-import {ParamIdToNumber, QueryStrToNumArray, QueryStrToNumber} from "../lib/decorators";
-import {Expense} from "@prisma/client";
-import {syncLedger} from "../services/ledger.service";
+} from "../services/expense.service.js";
+import {PAY_TYPE, PAY_TYPE_GROUP} from "../lib/constants.js";
+import {FilterExpenseDto} from "../dtos/FilterExpense.dto.js";
+import {ParamIdToNumber, QueryStrToNumArray, QueryStrToNumber} from "../lib/decorators.js";
+import {Expense} from "../generated/prisma/client.js";
+import {syncLedger} from "../services/ledger.service.js";
 import dayjs from "dayjs";
 
 class ExpenseController {

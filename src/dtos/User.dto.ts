@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import {singleUserSchema, userCreateSchema, userUpdateSchema} from "../validations/user.validation";
+import {singleUserSchema, userCreateSchema, userUpdateSchema} from "../validations/user.validation.js";
 
 export type CreateUserDto = z.infer<typeof userCreateSchema>;
 

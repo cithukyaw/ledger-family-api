@@ -1,10 +1,10 @@
-import {Ledger, PrismaClient} from "@prisma/client";
-import {UpsertLedgerDto} from "../dtos/UpsertLedgerDto";
-import {findMonthlyExpenses} from "./expense.service";
-import {findMonthlyPassiveIncome} from "./passiveIncome.service";
+import {Ledger} from "../generated/prisma/client.js";
+import {prisma} from "../lib/prisma.js";
+import {UpsertLedgerDto} from "../dtos/UpsertLedgerDto.js";
+import {findMonthlyExpenses} from "./expense.service.js";
+import {findMonthlyPassiveIncome} from "./passiveIncome.service.js";
 import dayjs from "dayjs";
 
-const prisma = new PrismaClient();
 
 export const findLedger = async (userId: number, date: string): Promise<Ledger | null> => {
   return prisma.ledger.findFirst({

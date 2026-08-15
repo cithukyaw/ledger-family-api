@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import {CURRENCY} from "../lib/constants";
+import {CURRENCY} from "../lib/constants.js";
 
 export const ledgerUpsertSchema = z.object({
   id: z.number().optional(),

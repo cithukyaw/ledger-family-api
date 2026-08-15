@@ -1,10 +1,10 @@
-import {PrismaClient, User as UserModel} from "@prisma/client"
-import {CreateUserDto, UpdateUserDto} from "../dtos/User.dto";
-import {ROLE} from "../lib/constants";
+import {User as UserModel} from "../generated/prisma/client.js";
+import {prisma} from "../lib/prisma.js";
+import {CreateUserDto, UpdateUserDto} from "../dtos/User.dto.js";
+import {ROLE} from "../lib/constants.js";
 import {genSaltSync, hashSync} from "bcryptjs";
-import {User, UserFields} from "../types/declarations";
+import {User, UserFields} from "../types/declarations.js";
 
-const prisma = new PrismaClient()
 
 const publicUserFields: UserFields = {
   id: true,

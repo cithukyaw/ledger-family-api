@@ -1,10 +1,10 @@
 import {Request, Response} from "express";
-import {CreateBudgetResponse} from "../types/declarations";
-import {apiValidationError} from "../lib/api";
-import {Budget} from "@prisma/client";
-import {budgetUpsertSchema} from "../validations/budget.validation";
-import {upsertBudget} from "../services/budget.service";
-import {UpsertBudgetDto} from "../dtos/UpsertBudgetDto";
+import {CreateBudgetResponse} from "../types/declarations.js";
+import {apiValidationError} from "../lib/api.js";
+import {Budget} from "../generated/prisma/client.js";
+import {budgetUpsertSchema} from "../validations/budget.validation.js";
+import {upsertBudget} from "../services/budget.service.js";
+import {UpsertBudgetDto} from "../dtos/UpsertBudgetDto.js";
 
 class BudgetController {
   /**
